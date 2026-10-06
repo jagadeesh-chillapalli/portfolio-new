@@ -9,6 +9,10 @@
     <meta property="og:title" content="Chillapalli Jagadeesh — Video Editor | Photographer | Colorist" />
     <meta property="og:description" content="Portfolio of Chillapalli Jagadeesh — Video Editor, Cinematographer &amp; Colorist with 3+ years of professional experience in cinematic editing, wedding films, videography and color grading." />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --bg: #000000;
@@ -217,110 +221,170 @@
             display: grid;
             grid-template-columns: 360px 1fr;
             gap: 28px;
-            align-items: start;
+            align-items: center;
             margin-bottom: 36px;
         }
 
         .profile-wrap {
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        @property --profile-angle {
-            syntax: '<angle>';
-            inherits: false;
-            initial-value: 0deg;
-        }
-
-        .profile {
-            width: 100%;
-            max-width: 420px;
-            padding: 22px;
-            border-radius: 16px;
-            text-align: center;
-            position: relative;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
             overflow: visible;
-            transition: transform .35s ease;
-            transform-origin: center;
+            width: 100%;
+            padding-top: 14px;
         }
 
-        /* Sharp continuous moving gradient border beam, visible strictly on hover */
-        .profile::after {
+        .polaroid {
+            width: 100%;
+            max-width: 300px;
+            background: linear-gradient(135deg, #fdfbf7 0%, #f5f1e8 50%, #ede7dc 100%);
+            border-radius: 3px;
+            padding: 15px 15px 20px 15px;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), 0 3px 8px rgba(0, 0, 0, 0.35);
+            transform: rotate(-3deg);
+            transform-origin: center center;
+            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease;
+            position: relative;
+            cursor: default;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Washi / Masking Tape */
+        .polaroid::before {
             content: "";
             position: absolute;
-            inset: -1.5px;
-            border-radius: 17.5px;
-            padding: 1.5px;
-            background: conic-gradient(
-                from var(--profile-angle, 0deg) at 50% 50%,
-                transparent 0%,
-                transparent 50%,
-                rgba(255, 170, 170, 0.2) 65%,
-                rgba(255, 170, 170, 0.9) 80%,
-                rgba(255, 255, 255, 1) 90%,
-                rgba(215, 140, 255, 0.85) 95%,
-                transparent 100%
+            top: -14px;
+            left: 50%;
+            width: 90px;
+            height: 28px;
+            transform: translateX(-50%) rotate(4deg);
+            background: linear-gradient(
+                135deg,
+                rgba(246, 238, 214, 0.78) 0%,
+                rgba(235, 224, 192, 0.68) 35%,
+                rgba(255, 250, 235, 0.85) 50%,
+                rgba(238, 227, 195, 0.72) 65%,
+                rgba(230, 218, 185, 0.76) 100%
             );
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
+            backdrop-filter: blur(0.5px);
+            -webkit-backdrop-filter: blur(0.5px);
+            clip-path: polygon(
+                0% 0%,
+                100% 0%,
+                97% 15%,
+                100% 30%,
+                96% 45%,
+                100% 60%,
+                97% 75%,
+                100% 90%,
+                98% 100%,
+                0% 100%,
+                3% 85%,
+                0% 70%,
+                4% 55%,
+                0% 40%,
+                3% 25%,
+                0% 10%
+            );
+            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+            z-index: 10;
             pointer-events: none;
-            opacity: 0;
-            animation: profileBorderSpin 4.5s linear infinite;
-            z-index: 2;
-            transition: opacity .35s ease;
         }
 
-        .profile:hover::after {
-            opacity: 1;
-        }
-
-        @keyframes profileBorderSpin {
-            0% {
-                --profile-angle: 0deg;
-            }
-            100% {
-                --profile-angle: 360deg;
-            }
+        .polaroid:hover {
+            transform: rotate(0deg) translateY(-6px);
+            box-shadow: 0 22px 45px rgba(0, 0, 0, 0.7), 0 5px 14px rgba(0, 0, 0, 0.45);
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .profile::after {
-                animation: none !important;
+            .polaroid {
+                transition: none !important;
             }
         }
 
-        .profile-img {
-            width: 200px;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 12px;
-            display: block;
-            margin: 0 auto;
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
-            transition: transform .45s cubic-bezier(.2, .9, .3, 1);
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -webkit-user-drag: none;
+        .polaroid-photo {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background: #111114;
+            border-radius: 1px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.45);
+        }
+
+        .polaroid-photo::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.45), inset 0 1px 3px rgba(0, 0, 0, 0.3);
             pointer-events: none;
         }
 
-        .profile:hover .profile-img {
-            transform: scale(1.05) rotate(1deg);
+        .polaroid-img {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            object-position: 50% 25%;
+            filter: grayscale(100%) contrast(1.06);
+            display: block;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
-        .profile h3 {
-            margin: 12px 0 4px;
-            font-size: 18px;
+        .polaroid-caption {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 13px;
+            padding-bottom: 2px;
+            min-height: 56px;
+            text-align: center;
         }
 
-        .profile p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 13px;
+        .polaroid-name {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 27px;
+            font-weight: 700;
+            color: #2a2a2a;
+            line-height: 1.15;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+        }
+
+        .polaroid-role {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 17.5px;
+            font-weight: 600;
+            color: #4a4a4a;
+            line-height: 1.2;
+            letter-spacing: 0.1px;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .polaroid-tagline {
+            margin-top: 15px;
+            font-size: 14px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.78);
+            text-align: center;
+            max-width: 310px;
+            line-height: 1.45;
+            text-wrap: balance;
+        }
+
+        .polaroid-tagline .quote-mark {
+            color: var(--pink, #ffaaaa);
+            font-style: normal;
+            font-weight: 700;
+            font-size: 1.15em;
+            display: inline-block;
+            vertical-align: baseline;
         }
 
         .hero-text {
@@ -615,37 +679,6 @@
             margin-top: 12px;
         }
 
-        .two-cols ul {
-            margin: 0;
-            padding-left: 18px;
-            color: var(--muted);
-            font-size: 14px;
-            list-style: disc;
-        }
-
-        .two-cols li {
-            margin-bottom: 6px;
-        }
-
-        .three-cols {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-            margin-top: 12px;
-        }
-
-        .three-cols ul {
-            margin: 0;
-            padding-left: 18px;
-            color: var(--muted);
-            font-size: 14px;
-            list-style: disc;
-        }
-
-        .three-cols li {
-            margin-bottom: 6px;
-        }
-
         .reveal {
             opacity: 0;
             transform: translateY(18px);
@@ -657,75 +690,430 @@
             transform: none;
         }
 
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 155px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 135px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, transparent, var(--pink), transparent);
-            background-size: 100% 200%;
-            animation: flow 8s linear infinite;
-        }
-
-        .tl-item {
-            position: relative;
-            margin-bottom: 38px;
-        }
-
-        .tl-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .tl-year {
-            position: absolute;
-            left: -155px;
-            width: 135px;
-            text-align: center;
-            top: 8px;
-            font-size: 11.5px;
-            font-weight: 700;
-            color: white;
-            background: rgba(255, 170, 170, 0.15);
-            padding: 4px 8px;
-            border-radius: 20px;
-            border: 1px solid var(--pink);
-            backdrop-filter: blur(8px);
-            white-space: nowrap;
-        }
-
-        .tl-card {
-            margin-left: 20px;
-            transition: all .4s ease;
-        }
-
-        .tl-card:hover {
-            transform: translateX(12px);
-            border-color: var(--pink);
-            box-shadow: 0 20px 40px rgba(255, 170, 170, 0.2);
-        }
-
         .tl-role {
-            color: var(--pink);
+            color: var(--pink, #ffaaaa);
             font-size: 13px;
-            margin: 4px 0 8px;
             font-weight: 600;
         }
 
-        @keyframes flow {
-            0% {
-                background-position: 0 0;
+        /* Editor's Video Timeline (NLE Premiere Pro / DaVinci Resolve style) */
+        .editor-timeline-section {
+            margin-top: 38px;
+            position: relative;
+        }
+
+        .editor-timeline {
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .timeline-board {
+            position: relative;
+            width: 100%;
+            padding-top: 24px;
+            box-sizing: border-box;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 10px;
+            align-items: stretch;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .timeline-headers-col {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .track-head-ruler {
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+        }
+
+        .track-head-video {
+            height: 60px;
+            border-radius: 8px;
+            background: #15161f;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .track-badge-v1 {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--pink, #ffaaaa);
+            background: rgba(255, 170, 170, 0.12);
+            padding: 3px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 170, 170, 0.3);
+            letter-spacing: 0.06em;
+        }
+
+        .timeline-stage-col {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        /* Timecode Ruler */
+        .timeline-ruler {
+            position: relative;
+            height: 24px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .ruler-tick {
+            position: absolute;
+            bottom: 0;
+            width: 1px;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-50%);
+        }
+
+        .ruler-tick.tick-sub {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .ruler-year {
+            position: absolute;
+            bottom: 8px;
+            transform: translateX(-50%);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.48);
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        .ruler-year-start {
+            transform: translateX(0);
+        }
+
+        /* Track Lane & Clips */
+        .timeline-track-lane {
+            position: relative;
+            height: 60px;
+            background: #14151e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 4px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: stretch;
+            gap: 5px;
+            min-width: 0;
+        }
+
+        .timeline-clips-track {
+            display: flex;
+            align-items: stretch;
+            gap: 5px;
+            width: 100%;
+            height: 100%;
+            min-width: 0;
+        }
+
+        .editor-timeline-section.in-view .timeline-clips-track {
+            animation: timelineClipsGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Clip Button */
+        .timeline-clip {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 7px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-left: 3px solid rgba(255, 255, 255, 0.35);
+            border-right: 3px solid rgba(0, 0, 0, 0.55);
+            cursor: pointer;
+            text-align: left;
+            box-sizing: border-box;
+            min-width: 0;
+            overflow: hidden;
+            transition: border-color 0.2s ease, filter 0.2s ease, background 0.2s ease;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .timeline-clip:focus-visible {
+            outline: 2px solid var(--pink, #ffaaaa);
+            outline-offset: 2px;
+        }
+
+        .timeline-clip:hover {
+            border-color: rgba(255, 255, 255, 0.32);
+            filter: brightness(1.08);
+        }
+
+        /* Freelance Clip: Calmer muted coral/burgundy */
+        .clip-freelance {
+            flex: 77 1 0%;
+            min-width: 130px;
+            background: linear-gradient(135deg, rgba(125, 52, 72, 0.65) 0%, rgba(85, 36, 52, 0.75) 100%);
+        }
+
+        /* Prores Studio: Active role pink/coral accent */
+        .clip-prores {
+            flex: 23 1 125px;
+            min-width: 120px;
+            background: linear-gradient(135deg, rgba(225, 75, 110, 0.8) 0%, rgba(185, 45, 80, 0.9) 100%);
+        }
+
+        .timeline-clip.is-active,
+        .timeline-clip[aria-pressed="true"] {
+            border-color: #ffffff;
+            border-top: 1px solid #ffffff;
+            border-bottom: 1px solid #ffffff;
+            filter: brightness(1.15);
+        }
+
+        .clip-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .clip-date {
+            font-size: 11px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.72);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        /* Playhead */
+        .timeline-playhead {
+            position: absolute;
+            left: 100%;
+            top: -24px;
+            bottom: 0;
+            width: 2px;
+            background: var(--pink, #ffaaaa);
+            z-index: 15;
+            pointer-events: none;
+            transform: translateX(-50%);
+        }
+
+        .editor-timeline-section.in-view .timeline-playhead {
+            animation: timelinePlayheadSlide 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .playhead-badge {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 9.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #12131a;
+            background: var(--pink, #ffaaaa);
+            padding: 1px 5px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+
+        .playhead-cap {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 7px solid var(--pink, #ffaaaa);
+        }
+
+        /* Details Panel */
+        .timeline-details-panel {
+            margin-top: 18px;
+            padding: 18px 20px;
+            border-radius: 12px;
+            background: rgba(18, 19, 27, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            box-sizing: border-box;
+            transition: opacity 0.18s ease;
+            min-height: 148px;
+        }
+
+        .timeline-details-panel.is-updating {
+            opacity: 0.25;
+        }
+
+        .details-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+
+        .details-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.2px;
+        }
+
+        .details-period {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--pink, #ffaaaa);
+            opacity: 0.85;
+            white-space: nowrap;
+        }
+
+        .details-subtitle {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: rgba(220, 228, 240, 0.72);
+            margin: 2px 0 10px 0;
+            line-height: 1.4;
+        }
+
+        .details-desc {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        @keyframes timelineClipsGrow {
+            from {
+                clip-path: inset(0 100% 0 0);
+            }
+            to {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        @keyframes timelinePlayheadSlide {
+            from {
+                left: 0%;
+            }
+            to {
+                left: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .editor-timeline-section.in-view .timeline-clips-track,
+            .editor-timeline-section.in-view .timeline-playhead {
+                animation: none !important;
+                clip-path: none !important;
+                left: 100% !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .timeline-grid {
+                grid-template-columns: 34px 1fr;
+                gap: 8px;
             }
 
-            100% {
-                background-position: 0 200%;
+            .track-head-video {
+                height: 54px;
+            }
+
+            .timeline-track-lane {
+                height: 54px;
+                padding: 3px;
+                gap: 4px;
+            }
+
+            .timeline-clips-track {
+                gap: 4px;
+            }
+
+            .track-badge-v1 {
+                font-size: 10px;
+                padding: 2px 4px;
+            }
+
+            .clip-label {
+                font-size: 12px;
+            }
+
+            .clip-date {
+                font-size: 10px;
+            }
+
+            .timeline-clip {
+                padding: 4px 8px;
+            }
+
+            .clip-freelance {
+                min-width: 100px;
+            }
+
+            .clip-prores {
+                min-width: 110px;
+            }
+
+            .ruler-year-minor {
+                display: none !important;
+            }
+
+            .ruler-year {
+                font-size: 10px;
+            }
+
+            .timeline-details-panel {
+                padding: 14px 16px;
+                margin-top: 14px;
+                min-height: 200px;
+            }
+
+            .details-title {
+                font-size: 15px;
+            }
+
+            .details-subtitle {
+                font-size: 12.5px;
+                margin: 2px 0 8px 0;
+            }
+
+            .details-desc {
+                font-size: 13.5px;
             }
         }
 
@@ -867,7 +1255,7 @@
             pointer-events: none;
         }
 
-        .software-icon-card:hover {
+        .software-icon-card.is-active {
             transform: scale(1.32);
             opacity: 1;
             z-index: 20;
@@ -902,7 +1290,7 @@
             transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .software-name-item:hover {
+        .software-name-item.is-active {
             color: #ffffff;
             border-color: rgba(255, 170, 170, 0.35);
             background: rgba(255, 170, 170, 0.08);
@@ -910,7 +1298,7 @@
             transform: translateY(-1px);
         }
 
-        .software-name-item:hover .software-name-dot {
+        .software-name-item.is-active .software-name-dot {
             background: var(--pink);
             box-shadow: 0 0 8px var(--pink);
         }
@@ -928,7 +1316,7 @@
                 width: 54px;
                 height: 54px;
             }
-            .software-icon-card:hover {
+            .software-icon-card.is-active {
                 transform: scale(1.22);
             }
             .software-name-item {
@@ -992,24 +1380,119 @@
 
         @media (max-width:899px) {
 
+            html {
+                scroll-behavior: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Disable heavy SVG feTurbulence grain on mobile to save GPU texture memory */
+            .film-grain {
+                display: none !important;
+            }
+
+            /* Replace heavy 110px blur filters & animated orbs with static lightweight CSS radial gradients */
+            .orb {
+                filter: none !important;
+                animation: none !important;
+                will-change: auto !important;
+                opacity: 0.65 !important;
+            }
+
+            .orb-1 {
+                width: 320px !important;
+                height: 320px !important;
+                left: -40px !important;
+                top: 40px !important;
+                background: radial-gradient(circle, rgba(255, 170, 170, 0.16), transparent 70%) !important;
+            }
+
+            .orb-2 {
+                width: 340px !important;
+                height: 340px !important;
+                right: -50px !important;
+                top: 35% !important;
+                background: radial-gradient(circle, rgba(139, 92, 246, 0.14), transparent 70%) !important;
+            }
+
+            .orb-3 {
+                width: 300px !important;
+                height: 300px !important;
+                left: 5% !important;
+                bottom: 5% !important;
+                background: radial-gradient(circle, rgba(255, 210, 180, 0.12), transparent 70%) !important;
+            }
+
+            /* Remove spotlight overlay on mobile */
+            .spotlight {
+                display: none !important;
+            }
+
+            /* Replace GPU texture-heavy backdrop-filter: blur with lightweight solid dark glass */
+            .card-base,
+            .card,
+            .link {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(16, 17, 24, 0.95) !important;
+            }
+
+            /* Stop background continuous conic border spin on mobile */
+            .profile::after {
+                animation: none !important;
+                display: none !important;
+            }
+
+            /* Instant stable card rendering without scroll flicker or blank states */
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
             header {
                 flex-direction: column;
             }
 
             .hero {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 36px;
             }
 
             .profile-wrap {
                 order: -1;
                 margin-bottom: 0;
                 width: 100%;
+                padding-top: 12px;
             }
 
-            .profile {
-                max-width: 100%;
-                width: 100%;
+            .polaroid {
+                max-width: 280px;
+                transform: rotate(-2deg) !important;
+            }
+
+            .polaroid::before {
+                width: 70px;
+                height: 22px;
+                top: -11px;
+            }
+
+            .polaroid:hover {
+                transform: rotate(-2deg) !important;
+                box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), 0 3px 8px rgba(0, 0, 0, 0.35) !important;
+            }
+
+            .polaroid-name {
+                font-size: 24.5px;
+            }
+
+            .polaroid-role {
+                font-size: 15.5px;
+            }
+
+            .polaroid-tagline {
+                max-width: 295px;
+                font-size: 13.5px;
+                margin-top: 14px;
             }
 
             .hero-text {
@@ -1018,33 +1501,40 @@
             }
         }
 
-        @media (max-width:850px) {
-            .three-cols {
-                grid-template-columns: 1fr;
+        @media (hover: none) or (pointer: coarse) {
+            .film-grain {
+                display: none !important;
+            }
+
+            .orb {
+                filter: none !important;
+                animation: none !important;
+                will-change: auto !important;
+            }
+
+            .spotlight {
+                display: none !important;
+            }
+
+            .card-base,
+            .card,
+            .link {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(16, 17, 24, 0.95) !important;
+            }
+
+            .polaroid {
+                transform: rotate(-2deg) !important;
+            }
+
+            .polaroid:hover {
+                transform: rotate(-2deg) !important;
+                box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), 0 3px 8px rgba(0, 0, 0, 0.35) !important;
             }
         }
 
         @media (max-width:768px) {
-            .timeline {
-                padding-left: 24px;
-            }
-
-            .timeline::before {
-                left: 8px;
-            }
-
-            .tl-year {
-                position: static;
-                display: inline-block;
-                width: auto;
-                margin-bottom: 10px;
-                text-align: left;
-            }
-
-            .tl-card {
-                margin-left: 12px;
-            }
-
             footer {
                 flex-direction: column;
                 gap: 8px;
@@ -1062,13 +1552,22 @@
                 grid-template-columns: 1fr;
             }
 
-            .profile {
-                padding: 20px 16px;
+            .polaroid {
+                max-width: 260px;
+                padding: 12px 12px 18px 12px;
             }
 
-            .profile-img {
-                width: 160px;
-                height: 180px;
+            .polaroid-name {
+                font-size: 23px;
+            }
+
+            .polaroid-role {
+                font-size: 14.5px;
+            }
+
+            .polaroid-tagline {
+                font-size: 13px;
+                max-width: 280px;
             }
 
             .hero-text {
@@ -1164,19 +1663,23 @@
 
         <!-- Hero -->
         <div class="hero">
-            <div class="profile-wrap reveal">
-                <aside class="profile card-base" id="profileCard" aria-label="Profile card">
-                    <img src="./assets/avatar.webp" alt="Chillapalli Jagadeesh" class="profile-img" draggable="false" />
-                    <h3>Chillapalli Jagadeesh</h3>
-                    <p>Video Editor | Photographer | Colorist</p>
-                    <p id="quote">"Passionate about visual storytelling &amp; building a career in Telugu film &amp; entertainment"</p>
-                </aside>
+            <div class="profile-wrap">
+                <div class="polaroid" id="profileCard" aria-label="Chillapalli Jagadeesh Polaroid photo">
+                    <div class="polaroid-photo">
+                        <img src="./assets/avatar.webp" alt="Chillapalli Jagadeesh" class="polaroid-img" draggable="false" />
+                    </div>
+                    <div class="polaroid-caption">
+                        <span class="polaroid-name">Chillapalli Jagadeesh</span>
+                        <span class="polaroid-role">Video Editor | Photographer | Colorist</span>
+                    </div>
+                </div>
+                <p class="polaroid-tagline"><span class="quote-mark">“</span>Passionate about visual storytelling &amp; building a career in Telugu film &amp; entertainment<span class="quote-mark">”</span></p>
             </div>
 
-            <div class="hero-text card-base reveal" aria-labelledby="heroHeading">
+            <div class="hero-text card-base" aria-labelledby="heroHeading">
                 <h2 id="heroHeading" class="hero-title">I don’t just edit — I craft cinematic emotion</h2>
                 <p class="lead">
-                    Video Editor, Cinematographer &amp; Colorist with 3+ years of professional experience in cinematic editing, wedding films, videography and color grading. Skilled in Adobe Premiere Pro and DaVinci Resolve, with hands-on experience in camera operation, post-production and visual storytelling. Passionate about building a career in Telugu film and entertainment production.
+                    Video Editor, Cinematographer &amp; Colorist with 3+ years of professional experience in cinematic editing, wedding films, videography and color grading. Skilled in Adobe Premiere Pro and DaVinci Resolve, with hands-on experience in camera operation, post-production and visual storytelling.
                 </p>
 
                 <div class="hero-cta">
@@ -1251,37 +1754,40 @@
 
                 <article class="card">
                     <h4>Cinematic Event &amp; Film Editing</h4>
-                    <p>High-quality, cinematic video content edited from start to finish from raw footage to final export, ensuring tight pacing and emotional storytelling.</p>
+                    <p>End-to-end post-production, from raw footage to final export. Story-driven edits with tight pacing, clean cuts and emotion-led storytelling for wedding films, events and cinema.</p>
                     <div class="tags">
                         <span class="tag">Premiere Pro</span>
                         <span class="tag">DaVinci Resolve</span>
                         <span class="tag">Visual Storytelling</span>
+                        <span class="tag">Post-Production</span>
                     </div>
                 </article>
 
                 <article class="card">
                     <h4>Color Correction &amp; DI Grading</h4>
-                    <p>Professional color correction and creative grading using DaVinci Resolve to establish specific visual moods, film looks, and enhance visual aesthetics.</p>
+                    <p>Technical correction and creative grading in DaVinci Resolve. Balanced exposure, consistent shot matching and film looks built with LUTs to suit the mood of each story.</p>
                     <div class="tags">
                         <span class="tag">DaVinci Resolve</span>
                         <span class="tag">Color Science</span>
                         <span class="tag">LUTs &amp; Creative Grading</span>
+                        <span class="tag">Digital Intermediate (DI)</span>
                     </div>
                 </article>
 
                 <article class="card">
-                    <h4>Camera Operation &amp; Videography</h4>
-                    <p>Handling primary and secondary cameras for live shoots and studio productions, mastering exposure, framing, lighting, and lens selection.</p>
+                    <h4>Camera Operation, Videography &amp; Photography</h4>
+                    <p>Primary and secondary camera work for live events and studio shoots, plus photography. Strong control of exposure, framing, lighting and lens selection.</p>
                     <div class="tags">
                         <span class="tag">Camera Handling</span>
                         <span class="tag">Lighting &amp; Framing</span>
-                        <span class="tag">Lens Selection</span>
+                        <span class="tag">Lens &amp; Exposure</span>
+                        <span class="tag">Photography</span>
                     </div>
                 </article>
 
                 <article class="card">
                     <h4>Shorts, Teasers &amp; Motion VFX</h4>
-                    <p>Punchy, high-retention social teasers and promotional content with motion design, VFX, and visual polish optimized for reels and entertainment.</p>
+                    <p>Punchy, high-retention teasers and promo content with motion graphics and VFX polish, cut for reels and shorts.</p>
                     <div class="tags">
                         <span class="tag">After Effects</span>
                         <span class="tag">Canva</span>
@@ -1471,35 +1977,6 @@
             </div>
         </section>
 
-        <!-- Skills -->
-        <section class="reveal" aria-labelledby="skillsHeading" style="margin-top:28px">
-            <h3 id="skillsHeading" style="margin:0 0 14px; font-size:20px">Craft &amp; Arsenal</h3>
-            <div class="two-cols">
-                <div class="card">
-                    <h4 style="margin:0 0 10px; color: var(--text);">Softwares</h4>
-                    <ul>
-                        <li>Adobe Premiere Pro (Pr)</li>
-                        <li>DaVinci Resolve</li>
-                        <li>Adobe After Effects (Ae)</li>
-                        <li>Adobe Photoshop (Ps)</li>
-                        <li>Canva</li>
-                        <li>MS Office</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h4 style="margin:0 0 10px; color: var(--text);">Technical Skills</h4>
-                    <ul>
-                        <li>Videography &amp; Photography</li>
-                        <li>Color Correction &amp; Creative Grading</li>
-                        <li>Expert Camera Handling</li>
-                        <li>Lighting &amp; Framing</li>
-                        <li>Post-Production &amp; Editing</li>
-                        <li>Lens Selection &amp; Exposure</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
         <!-- Education & Film Training -->
         <section class="reveal" style="margin-top: 38px" aria-labelledby="eduHeading">
             <h3 id="eduHeading" style="margin:0 0 20px; font-size:20px">Education &amp; Film Training</h3>
@@ -1527,47 +2004,106 @@
             </div>
         </section>
 
-        <!-- EXPERIENCE TIMELINE -->
-        <section class="reveal" style="margin-top: 38px" aria-labelledby="expHeading">
+        <!-- EXPERIENCE TIMELINE (Editor's NLE Timeline) -->
+        <section class="reveal editor-timeline-section" style="margin-top: 38px" aria-labelledby="expHeading">
             <h3 id="expHeading" style="margin:0 0 20px; font-size:20px">Experience Timeline</h3>
 
-            <div class="timeline">
-                <!-- Sep 2025 - Present -->
-                <div class="tl-item">
-                    <div class="tl-year">Sep 2025 — Present</div>
-                    <div class="tl-card card">
-                        <h4>Video Editor &amp; Photographer — Prores Studio</h4>
-                        <p class="tl-role">Studio Video Content, Camera &amp; Color Grading</p>
-                        <p style="margin-bottom: 6px;">• Edit and deliver cinematic video content for studio and client projects from raw footage to final export.</p>
-                        <p style="margin-bottom: 6px;">• Handle camera operation, framing, exposure, and lens selection during shoots.</p>
-                        <p>• Perform professional color correction and creative grading using DaVinci Resolve.</p>
-                        <div class="tags">
-                            <span class="tag">DaVinci Resolve</span>
-                            <span class="tag">Premiere Pro</span>
-                            <span class="tag">Camera Operation</span>
-                            <span class="tag">Color Grading</span>
-                            <span class="tag">Lighting &amp; Framing</span>
+            <div class="editor-timeline" id="editorTimeline">
+                <div class="timeline-board">
+                    <div class="timeline-grid">
+                        <!-- Left Track Headers -->
+                        <div class="timeline-headers-col" aria-hidden="true">
+                            <div class="track-head-ruler">TC</div>
+                            <div class="track-head-video">
+                                <span class="track-badge-v1">V1</span>
+                            </div>
+                        </div>
+
+                        <!-- Right Timeline Stage -->
+                        <div class="timeline-stage-col">
+                            <!-- Timecode Ruler -->
+                            <div class="timeline-ruler" aria-hidden="true">
+                                <div class="ruler-ticks">
+                                    <span class="ruler-tick" style="left: 0%"></span>
+                                    <span class="ruler-tick tick-sub" style="left: 10.5%"></span>
+                                    <span class="ruler-tick" style="left: 21%"></span>
+                                    <span class="ruler-tick tick-sub" style="left: 31.5%"></span>
+                                    <span class="ruler-tick" style="left: 42.1%"></span>
+                                    <span class="ruler-tick tick-sub" style="left: 52.6%"></span>
+                                    <span class="ruler-tick" style="left: 63.2%"></span>
+                                    <span class="ruler-tick tick-sub" style="left: 73.7%"></span>
+                                    <span class="ruler-tick" style="left: 84.2%"></span>
+                                    <span class="ruler-tick tick-sub" style="left: 92.1%"></span>
+                                    <span class="ruler-tick" style="left: 100%"></span>
+                                </div>
+                                <div class="ruler-labels">
+                                    <span class="ruler-year ruler-year-start" style="left: 0%">2022</span>
+                                    <span class="ruler-year ruler-year-minor" style="left: 21%">2023</span>
+                                    <span class="ruler-year" style="left: 42.1%">2024</span>
+                                    <span class="ruler-year ruler-year-minor" style="left: 63.2%">2025</span>
+                                    <span class="ruler-year" style="left: 84.2%">2026</span>
+                                </div>
+                            </div>
+
+                            <!-- Video Track Lane & Clips -->
+                            <div class="timeline-track-lane">
+                                <!-- Clips Container -->
+                                <div class="timeline-clips-track" role="tablist" aria-label="Career experience timeline">
+                                    <!-- Freelance Clip -->
+                                    <button
+                                        type="button"
+                                        class="timeline-clip clip-freelance"
+                                        role="tab"
+                                        id="clip-freelance"
+                                        aria-selected="false"
+                                        aria-controls="timeline-details"
+                                        data-role-id="freelance"
+                                    >
+                                        <span class="clip-label">Freelance</span>
+                                        <span class="clip-date">Jan 2022 — Sep 2025</span>
+                                    </button>
+
+                                    <!-- Prores Studio Clip (selected by default) -->
+                                    <button
+                                        type="button"
+                                        class="timeline-clip clip-prores is-active"
+                                        role="tab"
+                                        id="clip-prores"
+                                        aria-selected="true"
+                                        aria-controls="timeline-details"
+                                        data-role-id="prores"
+                                    >
+                                        <span class="clip-label">Prores Studio</span>
+                                        <span class="clip-date">Sep 2025 — Present</span>
+                                    </button>
+                                </div>
+
+                                <!-- Playhead at 100% / Present -->
+                                <div class="timeline-playhead" aria-hidden="true">
+                                    <span class="playhead-badge">Present</span>
+                                    <span class="playhead-cap"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2022 - Sep 2025 -->
-                <div class="tl-item">
-                    <div class="tl-year">2022 — Sep 2025</div>
-                    <div class="tl-card card">
-                        <h4>Freelance Video Editor &amp; Photographer — Various Clients</h4>
-                        <p class="tl-role">Live Events, Cinematic Films &amp; Color Grading</p>
-                        <p style="margin-bottom: 6px;"><strong>Camera Operation &amp; Videography:</strong> Handled primary and secondary cameras for various high-profile live events, mastering different lenses and exposure settings.</p>
-                        <p style="margin-bottom: 6px;"><strong>Cinematic Editing:</strong> Edited high-quality, cinematic event videos from start to finish, ensuring tight pacing and emotional storytelling.</p>
-                        <p><strong>Color Grading:</strong> Executed professional color correction and grading using DaVinci Resolve to establish specific moods and enhance visual aesthetics.</p>
-                        <div class="tags">
-                            <span class="tag">DaVinci Resolve</span>
-                            <span class="tag">Premiere Pro</span>
-                            <span class="tag">Camera Handling</span>
-                            <span class="tag">After Effects</span>
-                            <span class="tag">Photoshop</span>
-                        </div>
+                <!-- Selected Role Details Panel -->
+                <div
+                    class="timeline-details-panel"
+                    id="timeline-details"
+                    role="region"
+                    aria-live="polite"
+                    aria-labelledby="details-title"
+                >
+                    <div class="details-header">
+                        <h4 class="details-title" id="details-title">Video Editor & Photographer— Prores Studio</h4>
+                        <span class="details-period" id="details-period">Sep 2025 — Present</span>
                     </div>
+                    <div class="details-subtitle" id="details-subtitle">Studio Video Content, Camera &amp; Color Grading</div>
+                    <p class="details-desc" id="details-desc">
+                        I edit and deliver cinematic video for studio and client projects, taking them from raw footage to final export. On shoots I handle camera operation, framing, exposure and lens selection, and I finish each project with professional color correction and creative grading in DaVinci Resolve and Adobe Premiere Pro.
+                    </p>
                 </div>
             </div>
         </section>
@@ -1579,65 +2115,150 @@
     </div>
 
     <script>
-        // 60/120fps requestAnimationFrame mouse & spotlight tracking
+        const isMobileScreen = () => window.innerWidth <= 899 || window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches;
+
+        // Desktop-only smooth spotlight tracking with idle sleep (0 CPU/GPU on mobile & idle)
+        const spotlightEl = document.querySelector('.spotlight');
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let targetX = mouseX;
         let targetY = mouseY;
         let isMouseActive = false;
+        let isMouseRafRunning = false;
 
-        const spotlightEl = document.querySelector('.spotlight');
-
-        // Subtle initial fade-in transition for the spotlight on page load
-        if (spotlightEl) {
+        if (spotlightEl && !isMobileScreen()) {
             requestAnimationFrame(() => {
                 setTimeout(() => {
-                    spotlightEl.classList.add('loaded');
+                    if (spotlightEl) spotlightEl.classList.add('loaded');
                 }, 100);
             });
         }
 
+        function animateMouse() {
+            if (isMobileScreen()) {
+                isMouseRafRunning = false;
+                return;
+            }
+            const dx = targetX - mouseX;
+            const dy = targetY - mouseY;
+            mouseX += dx * 0.14;
+            mouseY += dy * 0.14;
+
+            document.documentElement.style.setProperty('--mouse-x', `${mouseX.toFixed(1)}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${mouseY.toFixed(1)}px`);
+
+            if (Math.abs(dx) > 0.25 || Math.abs(dy) > 0.25) {
+                requestAnimationFrame(animateMouse);
+            } else {
+                isMouseRafRunning = false;
+            }
+        }
+
         document.addEventListener('mousemove', (e) => {
+            if (isMobileScreen()) return;
             targetX = e.clientX;
             targetY = e.clientY;
             if (!isMouseActive) {
                 isMouseActive = true;
                 document.body.classList.add('has-mouse');
             }
-        });
+            if (!isMouseRafRunning) {
+                isMouseRafRunning = true;
+                requestAnimationFrame(animateMouse);
+            }
+        }, { passive: true });
 
         document.addEventListener('mouseleave', () => {
             isMouseActive = false;
             document.body.classList.remove('has-mouse');
         });
 
-        function animateMouse() {
-            // Smooth lerp for spotlight
-            mouseX += (targetX - mouseX) * 0.14;
-            mouseY += (targetY - mouseY) * 0.14;
-            document.documentElement.style.setProperty('--mouse-x', `${mouseX.toFixed(1)}px`);
-            document.documentElement.style.setProperty('--mouse-y', `${mouseY.toFixed(1)}px`);
-
-            requestAnimationFrame(animateMouse);
-        }
-        requestAnimationFrame(animateMouse);
-
-        // Staggered reveal on scroll
+        // Staggered reveal on scroll (immediately visible on mobile for zero-flicker scrolling)
         const revealElements = document.querySelectorAll('.reveal');
-        document.querySelectorAll('.timeline .tl-item').forEach((el, index) => {
-            el.style.transitionDelay = `${(index % 4) * 75}ms`;
-        });
+        if (isMobileScreen()) {
+            revealElements.forEach(el => el.classList.add('in-view'));
+        } else {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                    observer.unobserve(entry.target);
+            revealElements.forEach(el => observer.observe(el));
+        }
+
+        // Editor's Video Timeline (Career clips on track with interactive details panel)
+        const experienceData = [
+            {
+                id: "freelance",
+                role: "Freelance Video Editor & Photographer",
+                period: "Jan 2022 — Sep 2025",
+                label: "Freelance",
+                subtitle: "Live Events, Cinematic Films & Color Grading",
+                text: "I handled primary and secondary cameras at various high-profile live events, working across different lenses and exposure settings. I also edited high-quality cinematic event videos from start to finish with tight pacing and emotional storytelling, and used professional color correction and grading in DaVinci Resolve and Adobe Premiere Pro to set specific moods and enhance the visual look."
+            },
+            {
+                id: "prores",
+                role: "Video Editor & Photographer— Prores Studio",
+                period: "Sep 2025 — Present",
+                label: "Prores Studio",
+                subtitle: "Studio Video Content, Camera & Color Grading",
+                text: "I edit and deliver cinematic video for studio and client projects, taking them from raw footage to final export. On shoots I handle camera operation, framing, exposure and lens selection, and I finish each project with professional color correction and creative grading in DaVinci Resolve and Adobe Premiere Pro."
+            }
+        ];
+
+        const timelineClips = document.querySelectorAll('.timeline-clip');
+        const detailsTitle = document.getElementById('details-title');
+        const detailsPeriod = document.getElementById('details-period');
+        const detailsSubtitle = document.getElementById('details-subtitle');
+        const detailsDesc = document.getElementById('details-desc');
+        const detailsPanel = document.getElementById('timeline-details');
+
+        function selectExperienceRole(roleId) {
+            const roleData = experienceData.find(item => item.id === roleId);
+            if (!roleData) return;
+
+            timelineClips.forEach(clip => {
+                const isSelected = clip.dataset.roleId === roleId;
+                clip.classList.toggle('is-active', isSelected);
+                clip.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+                clip.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+            });
+
+            if (detailsPanel && detailsTitle && detailsPeriod && detailsDesc) {
+                detailsPanel.classList.add('is-updating');
+                setTimeout(() => {
+                    detailsTitle.textContent = roleData.role;
+                    detailsPeriod.textContent = roleData.period;
+                    if (detailsSubtitle) detailsSubtitle.textContent = roleData.subtitle;
+                    detailsDesc.textContent = roleData.text;
+                    detailsPanel.classList.remove('is-updating');
+                }, 120);
+            }
+        }
+
+        timelineClips.forEach((clip, index) => {
+            clip.addEventListener('click', () => {
+                selectExperienceRole(clip.dataset.roleId);
+            });
+
+            clip.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextIndex = (index + 1) % timelineClips.length;
+                    timelineClips[nextIndex].focus();
+                    selectExperienceRole(timelineClips[nextIndex].dataset.roleId);
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prevIndex = (index - 1 + timelineClips.length) % timelineClips.length;
+                    timelineClips[prevIndex].focus();
+                    selectExperienceRole(timelineClips[prevIndex].dataset.roleId);
                 }
             });
-        }, { threshold: 0.1 });
-
-        revealElements.forEach(el => observer.observe(el));
+        });
 
         // Current year
         const yearEl = document.getElementById('year');
@@ -1647,64 +2268,32 @@
         const whatsappBtn = document.getElementById('whatsappBtn');
         if (whatsappBtn) {
             const number = "917815823804";
-            const message = encodeURIComponent("Hi Jagadeesh — I'm interested in your video editing, photography, and color grading services. Could we discuss a project?");
+            const message = encodeURIComponent("Hi Jagadeesh — I'm interested in your editing services. Could we discuss a project?");
             whatsappBtn.href = `https://wa.me/${number}?text=${message}`;
         }
 
-        // Profile 3D perspective tilt
-        const profileCard = document.getElementById('profileCard');
-        if (profileCard) {
-            let pTargetRotX = 0, pTargetRotY = 0;
-            let pCurrRotX = 0, pCurrRotY = 0;
-            const profileImg = profileCard.querySelector('.profile-img');
-
-            profileCard.addEventListener('mousemove', (e) => {
-                const rect = profileCard.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                pTargetRotY = (x / (rect.width / 2)) * 8;
-                pTargetRotX = -(y / (rect.height / 2)) * 8;
+        // Live Date & Time (DD/MM/YYYY)
+        function updateDateTime() {
+            const now = new Date();
+            const date = now.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
             });
+            const time = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            }).replace(/AM|PM/i, m => m.toLowerCase());
 
-            profileCard.addEventListener('mouseleave', () => {
-                pTargetRotX = 0;
-                pTargetRotY = 0;
-            });
-
-            function animProfile() {
-                pCurrRotX += (pTargetRotX - pCurrRotX) * 0.12;
-                pCurrRotY += (pTargetRotY - pCurrRotY) * 0.12;
-                profileCard.style.transform = `perspective(900px) rotateX(${pCurrRotX.toFixed(2)}deg) rotateY(${pCurrRotY.toFixed(2)}deg)`;
-                if (profileImg) {
-                    profileImg.style.transform = `scale(1.03) translate3d(${(pCurrRotY * 0.4).toFixed(1)}px, ${(-pCurrRotX * 0.4).toFixed(1)}px, 0)`;
-                }
-                requestAnimationFrame(animProfile);
-            }
-            requestAnimationFrame(animProfile);
-
-            // Live Date & Time (DD/MM/YYYY)
-            function updateDateTime() {
-                const now = new Date();
-                const date = now.toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-                const time = now.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                }).replace(/AM|PM/i, m => m.toLowerCase());
-
-                const dateEl = document.getElementById('liveDate');
-                const timeEl = document.getElementById('liveTime');
-                if (dateEl) dateEl.textContent = date;
-                if (timeEl) timeEl.textContent = time;
-            }
-
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
+            const dateEl = document.getElementById('liveDate');
+            const timeEl = document.getElementById('liveTime');
+            if (dateEl) dateEl.textContent = date;
+            if (timeEl) timeEl.textContent = time;
         }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
 
         // Smooth scroll navigation for internal links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1722,6 +2311,79 @@
                 }
             });
         });
+
+        // Software Marquee JS Hover (continuous tracking under stationary cursor)
+        const marqueeContainer = document.querySelector('.marquee-container');
+        if (marqueeContainer && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            let isPointerInside = false;
+            let lastPointerX = 0;
+            let lastPointerY = 0;
+            let activeMarqueeItem = null;
+            let marqueeRafId = null;
+
+            function updateMarqueeHover() {
+                if (!isPointerInside) return;
+
+                const hitElement = document.elementFromPoint(lastPointerX, lastPointerY);
+                const candidate = hitElement ? hitElement.closest('.software-icon-card, .software-name-item') : null;
+                const nextItem = (candidate && marqueeContainer.contains(candidate)) ? candidate : null;
+
+                if (nextItem !== activeMarqueeItem) {
+                    if (activeMarqueeItem) {
+                        activeMarqueeItem.classList.remove('is-active');
+                    }
+                    if (nextItem) {
+                        nextItem.classList.add('is-active');
+                    }
+                    activeMarqueeItem = nextItem;
+                }
+
+                marqueeRafId = requestAnimationFrame(updateMarqueeHover);
+            }
+
+            function startHoverLoop() {
+                if (!marqueeRafId) {
+                    marqueeRafId = requestAnimationFrame(updateMarqueeHover);
+                }
+            }
+
+            function stopHoverLoop() {
+                if (marqueeRafId) {
+                    cancelAnimationFrame(marqueeRafId);
+                    marqueeRafId = null;
+                }
+                if (activeMarqueeItem) {
+                    activeMarqueeItem.classList.remove('is-active');
+                    activeMarqueeItem = null;
+                }
+            }
+
+            marqueeContainer.addEventListener('pointerenter', (e) => {
+                isPointerInside = true;
+                lastPointerX = e.clientX;
+                lastPointerY = e.clientY;
+                startHoverLoop();
+            });
+
+            marqueeContainer.addEventListener('pointermove', (e) => {
+                lastPointerX = e.clientX;
+                lastPointerY = e.clientY;
+                if (!isPointerInside) {
+                    isPointerInside = true;
+                    startHoverLoop();
+                }
+            });
+
+            marqueeContainer.addEventListener('pointerleave', () => {
+                isPointerInside = false;
+                stopHoverLoop();
+            });
+
+            window.addEventListener('blur', () => {
+                isPointerInside = false;
+                stopHoverLoop();
+            });
+        }
     </script>
 </body>
 
