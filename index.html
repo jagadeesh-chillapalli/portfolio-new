@@ -809,7 +809,7 @@
             transition: none !important;
         }
 
-        /* Page Label with Rolling Counter */
+        /* Page Label */
         .suite-page-label {
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
             font-size: 11px;
@@ -821,43 +821,6 @@
             text-transform: uppercase;
             display: flex;
             align-items: center;
-        }
-
-        .counter-roller-wrap {
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-            vertical-align: middle;
-            height: 1.15em;
-            line-height: 1.15em;
-        }
-
-        .roller-digit {
-            display: inline-block;
-            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms ease;
-        }
-
-        .roller-digit.roller-static {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .roller-digit.roller-out {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translateY(-100%);
-            opacity: 0;
-        }
-
-        .roller-digit.roller-in {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .roller-digit.roller-in-pre {
-            transform: translateY(100%);
-            opacity: 0;
         }
 
         .suite-title {
@@ -884,268 +847,520 @@
             border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        /* 1. Edit Visual: Timeline Clip Bars & Sweeping Playhead */
+        /* 1. Edit Visual: NLE Timeline Decorative Strip */
         .vis-edit-track {
             position: relative;
+            width: 100%;
+            height: 64px;
+            background: #0f1117;
+            border: 1px solid #232836;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8px;
+            box-sizing: border-box;
+            max-width: 500px;
+        }
+
+        .vis-tc-ruler {
+            display: flex;
+            justify-content: space-between;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 9px;
+            font-weight: 600;
+            color: #8A687B;
+            padding: 0 4px;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .vis-tracks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: relative;
+            width: 100%;
+        }
+
+        .vis-v2-track {
+            height: 8px;
+            width: 100%;
+            background: #171a23;
+            border-radius: 3px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            height: 28px;
-            background: #14151e;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 6px;
-            padding: 4px;
-            box-sizing: border-box;
-            max-width: 360px;
             overflow: hidden;
         }
 
-        .vis-clip {
+        .vis-v2-clip-1 {
+            width: 30%;
+            margin-left: 20%;
             height: 100%;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            opacity: 0;
-            transform: translateX(-16px);
-            animation: clipSlideIn 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            background: rgba(138, 104, 123, 0.4);
+            border: 1px solid rgba(138, 104, 123, 0.6);
+            border-radius: 2px;
+            box-sizing: border-box;
         }
 
-        .vis-clip-1 {
-            animation-delay: 0ms;
+        .vis-v2-clip-2 {
+            width: 15%;
+            margin-left: 10%;
+            height: 100%;
+            background: rgba(138, 104, 123, 0.4);
+            border: 1px solid rgba(138, 104, 123, 0.6);
+            border-radius: 2px;
+            box-sizing: border-box;
         }
 
-        .vis-clip-2 {
-            animation-delay: 80ms;
+        .vis-v1-track {
+            height: 18px;
+            width: 100%;
+            background: #171a23;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
         }
 
-        .vis-clip-3 {
-            animation-delay: 160ms;
+        .vis-v1-clip-side-left {
+            width: 25%;
+            height: 12px;
+            background: #232836;
+            border-radius: 2px;
+            margin-right: 4px;
+            flex-shrink: 0;
         }
 
-        @keyframes clipSlideIn {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .vis-v1-clip-master {
+            flex: 1;
+            height: 12px;
+            background-color: var(--theme-color, #D4A5B8);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(212, 165, 184, 0.3);
+            overflow: hidden;
+            min-width: 0;
         }
 
-        .vis-clip-active {
-            background: linear-gradient(90deg, rgba(225, 75, 110, 0.8), rgba(185, 45, 80, 0.9));
-            border-color: rgba(255, 170, 170, 0.6);
-            box-shadow: 0 0 10px rgba(255, 170, 170, 0.25);
-        }
-
-        .vis-edit-playhead-sweep {
+        .vis-v1-clip-pattern {
             position: absolute;
             inset: 0;
+            opacity: 0.3;
+            background-image: radial-gradient(#0f1117 1px, transparent 1px);
+            background-size: 4px 4px;
             pointer-events: none;
-            width: 100%;
-            height: 100%;
-            animation: editPlayheadSweep 4s linear infinite;
         }
 
-        .vis-edit-playhead-sweep::after {
-            content: '';
+        .vis-v1-clip-title {
+            font-size: 8.5px;
+            font-weight: 800;
+            color: #0f1117;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            z-index: 10;
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+
+        .vis-v1-clip-side-right {
+            width: 20%;
+            height: 12px;
+            background: #232836;
+            border-radius: 2px;
+            margin-left: 4px;
+            flex-shrink: 0;
+        }
+
+        .vis-playhead-needle {
             position: absolute;
             top: 0;
             bottom: 0;
-            left: 0;
+            left: 45%;
             width: 2px;
-            background: var(--pink, #ffaaaa);
-            border-radius: 1px;
-            box-shadow: 0 0 8px rgba(255, 170, 170, 0.85);
+            background: #ffffff;
+            z-index: 20;
+            box-shadow: 0 0 8px #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
         }
 
-        @keyframes editPlayheadSweep {
-            0% {
-                transform: translateX(0);
-                opacity: 0;
-            }
-            4% {
-                opacity: 1;
-            }
-            96% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(100%);
-                opacity: 0;
-            }
+        .vis-playhead-cap {
+            width: 10px;
+            height: 6px;
+            background: #ffffff;
+            border-bottom-left-radius: 2px;
+            border-bottom-right-radius: 2px;
         }
 
-        /* 2. Color Visual: 5 Graded Swatches Wave & Light Sweep */
+        /* 2. Color Visual: Micro Colorist Wheels + 5-Step Tonal Zone Bar */
         .vis-swatches {
             position: relative;
+            width: 100%;
+            background: #0d0c10;
+            border: 1px solid #26212c;
+            border-radius: 12px;
+            padding: 10px 12px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            max-width: 520px;
+        }
+
+        .vis-wheels-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 12px;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .vis-wheel-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            max-width: 360px;
-            overflow: hidden;
-            border-radius: 6px;
         }
 
-        .vis-swatch {
-            flex: 1;
-            height: 24px;
-            border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            opacity: 0;
-            transform: scale(0.65) translateY(6px);
-            animation: swatchPop 380ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--swatch-idx, 0) * 60ms) forwards;
+        .vis-wheel-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
         }
 
-        @keyframes swatchPop {
-            70% {
-                transform: scale(1.06) translateY(-2px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .swatch-1 { background: #1a3644; }
-        .swatch-2 { background: #264e5a; }
-        .swatch-3 { background: #5a5468; }
-        .swatch-4 { background: #964d60; }
-        .swatch-5 { background: #d4667a; border-color: rgba(255, 170, 170, 0.5); }
-
-        .vis-swatch-glimmer {
+        .vis-wheel-ring {
             position: absolute;
-            inset: 0;
+            inset: 3px;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 255, 255, 0.25);
             pointer-events: none;
+        }
+
+        .vis-wheel-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 5;
+        }
+
+        .vis-wheel-meta {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+
+        .vis-wheel-label {
+            font-size: 8.5px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .vis-wheel-val {
+            font-size: 11px;
+            font-weight: 700;
+            color: #F3E8EB;
+        }
+
+        .vis-tonal-container {
             width: 100%;
-            height: 100%;
-            animation: swatchLightSweep 4s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .vis-swatch-glimmer::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: 70px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-            transform: skewX(-20deg);
+        .vis-tonal-headers {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8.5px;
+            font-weight: 600;
+            color: #8A687B;
+            padding: 0 2px;
         }
 
-        @keyframes swatchLightSweep {
-            0%, 20% {
-                transform: translateX(-100px);
-                opacity: 0;
+        .vis-tonal-bar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            height: 26px;
+        }
+
+        .vis-tonal-chip {
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8.5px;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .vis-tonal-chip:hover {
+            transform: scale(1.05);
+        }
+
+        .vis-chip-1 {
+            background: #1F2633;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #D4A5B8;
+        }
+
+        .vis-chip-2 {
+            background: #4B3F50;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #F3E8EB;
+        }
+
+        .vis-chip-3 {
+            background: #8A687B;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #0d0c10;
+        }
+
+        .vis-chip-4 {
+            background: #D4A5B8;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #0d0c10;
+        }
+
+        .vis-chip-5 {
+            background: #F3E8EB;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #0d0c10;
+            box-shadow: 0 0 8px rgba(243, 232, 235, 0.25);
+        }
+
+        @media (max-width: 480px) {
+            .vis-swatches {
+                padding: 10px;
+                gap: 12px;
             }
-            25% {
-                opacity: 1;
+
+            .vis-wheels-row {
+                gap: 6px;
+                justify-content: space-between;
             }
-            55% {
-                transform: translateX(450px);
-                opacity: 1;
+
+            .vis-wheel-item {
+                gap: 5px;
             }
-            60%, 100% {
-                transform: translateX(450px);
-                opacity: 0;
+
+            .vis-wheel-circle {
+                width: 28px;
+                height: 28px;
+            }
+
+            .vis-wheel-val {
+                font-size: 10px;
+            }
+
+            .vis-tonal-chip {
+                font-size: 7.5px;
+            }
+
+            .vis-tonal-headers {
+                font-size: 7.5px;
             }
         }
 
-        /* 3. Camera Visual: Viewfinder with Autofocus Lock & 1s REC */
+        /* 3. Camera Visual: Cinema Viewfinder & Telemetry OSD Strip */
         .vis-viewfinder {
-            display: inline-flex;
+            position: relative;
+            width: 100%;
+            height: 64px;
+            background: #0f1117;
+            border: 1px solid #232836;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
-            width: 260px;
-            height: 38px;
-            padding: 6px 14px;
-            border-radius: 4px;
-            background: #14151e;
+            padding: 0 14px;
             box-sizing: border-box;
-            overflow: hidden;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            max-width: 520px;
         }
 
-        .vf-corner {
+        .vf-crop-corner {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            border-color: rgba(255, 255, 255, 0.4);
-            animation-duration: 500ms;
-            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-            animation-fill-mode: forwards;
+            width: 10px;
+            height: 10px;
+            border-color: rgba(255, 255, 255, 0.6);
+            pointer-events: none;
         }
 
-        .vf-tl {
-            top: 3px;
-            left: 3px;
+        .vf-crop-tl {
+            top: 6px;
+            left: 8px;
             border-top: 2px solid;
             border-left: 2px solid;
-            animation-name: afLockTL;
         }
 
-        .vf-tr {
-            top: 3px;
-            right: 3px;
+        .vf-crop-tr {
+            top: 6px;
+            right: 8px;
             border-top: 2px solid;
             border-right: 2px solid;
-            animation-name: afLockTR;
         }
 
-        .vf-bl {
-            bottom: 3px;
-            left: 3px;
+        .vf-crop-bl {
+            bottom: 6px;
+            left: 8px;
             border-bottom: 2px solid;
             border-left: 2px solid;
-            animation-name: afLockBL;
         }
 
-        .vf-br {
-            bottom: 3px;
-            right: 3px;
+        .vf-crop-br {
+            bottom: 6px;
+            right: 8px;
             border-bottom: 2px solid;
             border-right: 2px solid;
-            animation-name: afLockBR;
         }
 
-        @keyframes afLockTL {
-            from {
-                transform: translate(-3px, -3px) scale(1.3);
-                opacity: 0.3;
-            }
-            to {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
+        .vf-osd-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .vf-rec-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #171a23;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #232836;
+        }
+
+        .vf-rec-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ef4444;
+            animation: recPulse1s 1s ease-in-out infinite;
+        }
+
+        @keyframes recPulse1s {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.85); }
+        }
+
+        .vf-rec-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #f87171;
+            letter-spacing: 0.08em;
+            line-height: 1;
+        }
+
+        .vf-timecode-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.1em;
+            line-height: 1;
+        }
+
+        .vf-osd-center {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: #8A687B;
+            z-index: 10;
+        }
+
+        .vf-pill-tag {
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #171a23;
+            border: 1px solid #232836;
+            white-space: nowrap;
+        }
+
+        .vf-osd-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 10;
+            font-size: 10.5px;
+        }
+
+        .vf-setting-badge {
+            padding: 3px 6px;
+            border-radius: 4px;
+            background: #171a23;
+            border: 1px solid #232836;
+            color: #ffffff;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .vf-wb-badge {
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            background-color: var(--theme-color, #D4A5B8);
+            color: #0f1117;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 580px) {
+            .vf-osd-center {
+                display: none !important;
             }
         }
 
-        @keyframes afLockTR {
-            from {
-                transform: translate(3px, -3px) scale(1.3);
-                opacity: 0.3;
+        @media (max-width: 420px) {
+            .vis-viewfinder {
+                padding: 0 15px;
+                height: 68px;
             }
-            to {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-        }
 
-        @keyframes afLockBL {
-            from {
-                transform: translate(-3px, 3px) scale(1.3);
-                opacity: 0.3;
+            .vf-osd-left {
+                gap: 6px;
             }
-            to {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-        }
 
-        @keyframes afLockBR {
-            from {
-                transform: translate(3px, 3px) scale(1.3);
-                opacity: 0.3;
+            .vf-rec-badge {
+                padding: 3px 5px;
             }
-            to {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
+
+            .vf-timecode-text {
+                font-size: 9.5px;
+                letter-spacing: 0.05em;
+            }
+
+            .vf-osd-right {
+                gap: 4px;
+                font-size: 9.5px;
+            }
+
+            .vf-setting-badge,
+            .vf-wb-badge {
+                padding: 2px 5px;
             }
         }
 
@@ -1200,132 +1415,242 @@
             }
         }
 
-        /* 4. Motion Visual: Keyframe Diamonds & Traveling Playhead */
+        /* 4. Motion Visual: Shorts & Reels High-Retention Kinetic Rhythm Pacer */
         .vis-keyframes {
             position: relative;
-            height: 24px;
+            width: 100%;
+            background: #0c0b10;
+            border: 1px solid #231e2b;
+            border-radius: 12px;
+            padding: 10px 14px;
+            box-sizing: border-box;
             display: flex;
             align-items: center;
-            max-width: 320px;
-            overflow: hidden;
+            justify-content: space-between;
+            gap: 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            max-width: 580px;
+            user-select: none;
         }
 
-        .kf-line {
+        .vis-pacer-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            padding-right: 12px;
+            border-right: 1px solid #241f2d;
+        }
+
+        .vis-phone-frame {
+            width: 16px;
+            height: 28px;
+            border-radius: 4px;
+            border: 1.5px solid #e28783;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            box-shadow: 0 0 8px rgba(226, 135, 131, 0.3);
+            box-sizing: border-box;
+        }
+
+        .vis-phone-screen {
             width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.14);
-        }
-
-        .kf-runner {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            width: 100%;
-            animation: kfTravel 4s linear infinite;
-        }
-
-        .kf-runner::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 3px;
-            height: 14px;
-            background: var(--pink, #ffaaaa);
+            height: 100%;
+            background: rgba(226, 135, 131, 0.2);
             border-radius: 2px;
-            transform: translateY(-50%);
-            box-shadow: 0 0 8px rgba(255, 170, 170, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes kfTravel {
-            0% {
-                transform: translateX(0);
+        .vis-play-icon {
+            width: 0;
+            height: 0;
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+            border-left: 5px solid #ffffff;
+            margin-left: 1px;
+        }
+
+        .vis-pacer-meta {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+
+        .vis-pacer-label {
+            font-size: 8.5px;
+            color: #8A687B;
+            letter-spacing: 0.05em;
+        }
+
+        .vis-pacer-val {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+        }
+
+        .vis-pacer-segments {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .vis-pacer-segments::-webkit-scrollbar {
+            display: none;
+        }
+
+        .vis-segment-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 8px;
+            padding: 4px 8px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-sizing: border-box;
+        }
+
+        .vis-seg-hook {
+            background: #17131f;
+            border: 1px solid rgba(226, 135, 131, 0.4);
+        }
+
+        .vis-seg-drop {
+            background: #14111a;
+            border: 1px solid #292233;
+        }
+
+        .vis-seg-broll {
+            background: #14111a;
+            border: 1px solid #292233;
+        }
+
+        .vis-seg-cta {
+            background: #17131f;
+            border: 1px solid rgba(138, 104, 123, 0.4);
+        }
+
+        .vis-ping-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #e28783;
+            box-shadow: 0 0 6px #e28783;
+            animation: pingPulse 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes pingPulse {
+            75%, 100% {
+                transform: scale(1.6);
                 opacity: 0;
             }
-            4% {
-                opacity: 1;
+        }
+
+        .vis-seg-text {
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .vis-bars-wave {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 12px;
+            margin-left: 2px;
+        }
+
+        .vis-wave-bar {
+            width: 2px;
+            border-radius: 1px;
+            height: 100%;
+            animation: barEqu 1s ease-in-out infinite alternate;
+        }
+
+        .bar-anim-1 { animation-duration: 0.6s; }
+        .bar-anim-2 { animation-duration: 0.85s; animation-delay: 0.15s; }
+        .bar-anim-3 { animation-duration: 0.7s; animation-delay: 0.3s; }
+        .bar-anim-4 { animation-duration: 0.9s; animation-delay: 0.2s; }
+
+        @keyframes barEqu {
+            0% { height: 25%; }
+            100% { height: 100%; }
+        }
+
+        .vis-pacer-tempo {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            flex-shrink: 0;
+            padding-left: 8px;
+            line-height: 1.15;
+        }
+
+        @media (max-width: 768px) {
+            .vis-pacer-segments {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+                width: 100%;
+                overflow-x: visible;
             }
-            96% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(100%);
-                opacity: 0;
+
+            .vis-segment-item {
+                width: 100%;
+                justify-content: center;
+                padding: 4px 6px;
+                box-sizing: border-box;
             }
         }
 
-        .kf-diamond {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #2a2c3a;
-            border: 1.5px solid rgba(255, 255, 255, 0.4);
-            transform: translateY(-50%) rotate(45deg);
-            top: 50%;
-        }
-
-        .kf-d1 {
-            animation: diamondPulse1 4s ease-out infinite;
-        }
-
-        .kf-d2 {
-            animation: diamondPulse2 4s ease-out infinite;
-        }
-
-        .kf-d3 {
-            animation: diamondPulse3 4s ease-out infinite;
-        }
-
-        @keyframes diamondPulse1 {
-            0%, 10% {
-                transform: translateY(-50%) rotate(45deg) scale(1);
-                filter: brightness(1);
-            }
-            15% {
-                transform: translateY(-50%) rotate(45deg) scale(1.35);
-                filter: brightness(1.5);
-                border-color: #ffffff;
-                background: var(--pink, #ffaaaa);
-                box-shadow: 0 0 10px rgba(255, 170, 170, 0.8);
-            }
-            22%, 100% {
-                transform: translateY(-50%) rotate(45deg) scale(1);
-                filter: brightness(1);
+        @media (max-width: 580px) {
+            .vis-pacer-tempo {
+                display: none !important;
             }
         }
 
-        @keyframes diamondPulse2 {
-            0%, 45% {
-                transform: translateY(-50%) rotate(45deg) scale(1);
-                filter: brightness(1);
+        @media (max-width: 480px) {
+            .vis-keyframes {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 10px;
+                gap: 10px;
             }
-            50% {
-                transform: translateY(-50%) rotate(45deg) scale(1.35);
-                filter: brightness(1.5);
-                border-color: #ffffff;
-                box-shadow: 0 0 12px rgba(255, 170, 170, 0.9);
-            }
-            57%, 100% {
-                transform: translateY(-50%) rotate(45deg) scale(1);
-                filter: brightness(1);
-            }
-        }
 
-        @keyframes diamondPulse3 {
-            0%, 80% {
-                transform: translateY(-50%) rotate(45deg) scale(1);
-                filter: brightness(1);
+            .vis-pacer-badge {
+                padding-right: 0;
+                border-right: none;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #241f2d;
+                /* justify-content: center; */
             }
-            85% {
-                transform: translateY(-50%) rotate(45deg) scale(1.35);
-                filter: brightness(1.5);
-                border-color: #ffffff;
-                background: var(--pink, #ffaaaa);
-                box-shadow: 0 0 10px rgba(255, 170, 170, 0.8);
+
+            .vis-pacer-val {
+                font-size: 10px;
             }
-            92%, 100% {
-                transform: translateY(-50%) rotate(45deg) scale(1);
-                filter: brightness(1);
+
+            .vis-seg-text {
+                font-size: 8.5px;
+            }
+
+            .vis-segment-item {
+                padding: 4px;
+            }
+
+            .vis-pacer-tempo {
+                display: flex !important;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding-left: 0;
+                padding-top: 6px;
+                border-top: 1px solid #241f2d;
             }
         }
 
@@ -1480,13 +1805,15 @@
                 margin-top: 18px;
                 padding-top: 14px;
                 width: 100%;
+                display: flex;
+                justify-content: center;
             }
 
             .vis-edit-track,
             .vis-swatches,
             .vis-viewfinder,
             .vis-keyframes {
-                max-width: 100% !important;
+                /* max-width: 100% !important; */
                 width: 100% !important;
                 box-sizing: border-box;
             }
@@ -1943,6 +2270,8 @@
             flex-direction: column;
             gap: 8px;
             min-width: 0;
+            padding-right: 8px;
+            box-sizing: border-box;
         }
 
         /* Timecode Ruler */
@@ -2019,15 +2348,15 @@
             justify-content: center;
             padding: 6px 12px;
             border-radius: 7px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-left: 3px solid rgba(255, 255, 255, 0.35);
-            border-right: 3px solid rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-left: 3px solid rgba(255, 255, 255, 0.4);
+            border-right: 3px solid rgba(255, 255, 255, 0.22);
             cursor: pointer;
             text-align: left;
             box-sizing: border-box;
             min-width: 0;
             overflow: hidden;
-            transition: border-color 0.2s ease, filter 0.2s ease, background 0.2s ease;
+            transition: border-color 0.2s ease, filter 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -2038,7 +2367,7 @@
         }
 
         .timeline-clip:hover {
-            border-color: rgba(255, 255, 255, 0.32);
+            border-color: rgba(255, 255, 255, 0.45);
             filter: brightness(1.08);
         }
 
@@ -2051,16 +2380,18 @@
 
         /* Prores Studio: Active role pink/coral accent */
         .clip-prores {
-            flex: 23 1 125px;
+            flex: 23 1 0%;
             min-width: 120px;
             background: linear-gradient(135deg, rgba(225, 75, 110, 0.8) 0%, rgba(185, 45, 80, 0.9) 100%);
         }
 
         .timeline-clip.is-active,
-        .timeline-clip[aria-pressed="true"] {
-            border-color: #ffffff;
-            border-top: 1px solid #ffffff;
-            border-bottom: 1px solid #ffffff;
+        .timeline-clip[aria-pressed="true"],
+        .timeline-clip[aria-selected="true"] {
+            border: 1px solid #ffffff;
+            border-left: 3px solid #ffffff;
+            border-right: 3px solid #ffffff;
+            box-shadow: 0 0 14px rgba(255, 170, 170, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.08);
             filter: brightness(1.15);
         }
 
@@ -2084,6 +2415,16 @@
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 1.2;
+        }
+
+        .lbl-mob,
+        .date-mob {
+            display: none;
+        }
+
+        .lbl-desk,
+        .date-desk {
+            display: inline;
         }
 
         /* Playhead */
@@ -2213,11 +2554,14 @@
         }
 
         @keyframes timelineClipsGrow {
-            from {
-                clip-path: inset(0 100% 0 0);
+            0% {
+                clip-path: inset(-6px 100% -6px -6px);
             }
-            to {
-                clip-path: inset(0 0 0 0);
+            99% {
+                clip-path: inset(-6px -6px -6px -6px);
+            }
+            100% {
+                clip-path: none;
             }
         }
 
@@ -2239,28 +2583,121 @@
             }
         }
 
+        /* Responsive Layout Sizing for Experience Timeline & Grid */
+        @media (max-width: 768px) {
+            .timeline-grid {
+                grid-template-columns: 38px 1fr;
+                gap: 8px;
+            }
+
+            .timeline-headers-col,
+            .timeline-stage-col {
+                gap: 6px;
+            }
+
+            .timeline-stage-col {
+                padding-right: 8px;
+            }
+
+            .track-head-ruler,
+            .timeline-ruler {
+                height: 22px;
+            }
+
+            .track-head-video,
+            .timeline-track-lane {
+                height: 56px;
+                padding: 3px;
+                gap: 4px;
+            }
+
+            .timeline-clips-track {
+                gap: 4px;
+            }
+
+            .track-badge-v1 {
+                font-size: 10.5px;
+                padding: 2px 5px;
+            }
+
+            .clip-label {
+                font-size: 12px;
+            }
+
+            .clip-date {
+                font-size: 10px;
+            }
+
+            .timeline-clip {
+                padding: 5px 8px;
+            }
+
+            .clip-freelance {
+                flex: 77 1 0%;
+                min-width: 0;
+            }
+
+            .clip-prores {
+                flex: 23 1 0%;
+                min-width: 0;
+            }
+
+            .ruler-year-minor {
+                display: none !important;
+            }
+
+            .timeline-playhead {
+                top: -28px;
+            }
+
+            .playhead-badge {
+                top: -17px;
+            }
+        }
+
         @media (max-width: 640px) {
+            .lbl-desk,
+            .date-desk {
+                display: none !important;
+            }
+
+            .lbl-mob,
+            .date-mob {
+                display: inline !important;
+            }
+
             .container {
                 padding: 32px 16px;
             }
 
-            .timeline-playhead .playhead-badge {
-                right: 0;
-                left: auto;
-                transform: none;
+            .timeline-board {
+                padding-top: 18px;
             }
 
             .timeline-grid {
-                grid-template-columns: 34px 1fr;
-                gap: 8px;
+                grid-template-columns: 32px 1fr;
+                gap: 7px;
             }
 
-            .track-head-video {
-                height: 54px;
+            .timeline-headers-col {
+                gap: 6px;
+                padding-top: 0;
             }
 
+            .timeline-stage-col {
+                gap: 6px;
+                padding-top: 0;
+                padding-right: 8px;
+            }
+
+            .track-head-ruler,
+            .timeline-ruler {
+                height: 20px;
+            }
+
+            .track-head-video,
             .timeline-track-lane {
-                height: 54px;
+                height: 52px;
                 padding: 3px;
                 gap: 4px;
             }
@@ -2275,36 +2712,27 @@
             }
 
             .clip-label {
-                font-size: 12px;
+                font-size: 11.5px;
             }
 
             .clip-date {
-                font-size: 10px;
+                font-size: 9.5px;
+                letter-spacing: -0.01em;
             }
 
             .timeline-clip {
-                padding: 4px 8px;
+                padding: 4px 7px;
             }
 
             .clip-freelance {
-                min-width: 100px;
+                flex: 77 1 0%;
+                min-width: 0;
             }
 
             .clip-prores {
-                min-width: 110px;
-            }
-
-            .ruler-year-minor {
-                display: none !important;
-            }
-
-            .timeline-stage-col {
-                gap: 6px;
-                padding-top: 14px;
-            }
-
-            .timeline-ruler {
-                height: 20px;
+                flex: 23 1 0%;
+                min-width: 0;
+                padding: 4px 4px;
             }
 
             .ruler-year {
@@ -2321,13 +2749,13 @@
             }
 
             .timeline-playhead {
-                top: -30px;
+                top: -26px;
             }
 
             .playhead-badge {
                 top: -16px;
                 left: 50%;
-                transform: translateX(-80%);
+                transform: translateX(-50%);
                 font-size: 8.5px;
                 padding: 1px 4px;
                 letter-spacing: 0.04em;
@@ -2336,7 +2764,7 @@
             .timeline-details-panel {
                 padding: 14px 16px;
                 margin-top: 14px;
-                min-height: 200px;
+                min-height: 140px;
             }
 
             .details-title {
@@ -2350,6 +2778,81 @@
 
             .details-desc {
                 font-size: 13.5px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .timeline-grid {
+                grid-template-columns: 28px 1fr;
+                gap: 6px;
+            }
+
+            .timeline-headers-col {
+                gap: 5px;
+            }
+
+            .timeline-stage-col {
+                gap: 5px;
+                padding-right: 8px;
+            }
+
+            .track-head-ruler,
+            .timeline-ruler {
+                height: 18px;
+            }
+
+            .track-head-video,
+            .timeline-track-lane {
+                height: 48px;
+                padding: 2px;
+                gap: 3px;
+            }
+
+            .timeline-clips-track {
+                gap: 3px;
+            }
+
+            .track-badge-v1 {
+                font-size: 9px;
+                padding: 1px 3px;
+            }
+
+            .clip-label {
+                font-size: 10px;
+            }
+
+            .clip-date {
+                font-size: 8px;
+                letter-spacing: -0.02em;
+            }
+
+            .timeline-clip {
+                padding: 3px 5px;
+            }
+
+            .clip-freelance {
+                flex: 77 1 0%;
+                min-width: 0;
+            }
+
+            .clip-prores {
+                flex: 23 1 0%;
+                min-width: 0;
+            }
+
+            .ruler-year {
+                font-size: 9px;
+                bottom: 1px;
+            }
+
+            .timeline-playhead {
+                top: -23px;
+            }
+
+            .playhead-badge {
+                top: -15px;
+                font-size: 8px;
+                padding: 1px 3px;
             }
         }
 
@@ -3221,20 +3724,35 @@
                 >
                     <div class="suite-panel-content" id="suite-panel-content">
                         <div class="suite-page-label suite-stagger-item" id="suite-page-label" style="--stagger-idx: 0;">
-                            <span class="counter-roller-wrap" aria-hidden="true">
-                                <span class="roller-digit roller-static" id="suite-counter-val">01</span>
-                            </span>
-                            <span class="sr-only" id="suite-page-sr">01 / 04</span>
-                            <span aria-hidden="true">&nbsp;/ 04</span>
+                            <span id="suite-page-label-val">01 / 04</span>
                         </div>
                         <h4 class="suite-title suite-stagger-item" id="suite-title" style="--stagger-idx: 1;">Cinematic Event &amp; Film Editing</h4>
                         <p class="suite-text suite-stagger-item" id="suite-text" style="--stagger-idx: 2;">End-to-end post-production, from raw footage to final export. Story-driven edits with tight pacing, clean cuts and emotion-led storytelling for wedding films, events and cinema.</p>
                         
                         <div class="suite-visual-wrap suite-stagger-item" id="suite-visual" aria-hidden="true" style="--stagger-idx: 3;">
                             <div class="vis-edit-track">
-                                <div class="vis-clip" style="width: 25%"></div>
-                                <div class="vis-clip vis-clip-active" style="width: 45%"></div>
-                                <div class="vis-clip" style="width: 30%"></div>
+                                <div class="vis-tc-ruler">
+                                    <span>00:00:00:00</span>
+                                    <span>00:01:15:12</span>
+                                    <span>00:02:30:00</span>
+                                </div>
+                                <div class="vis-tracks-container">
+                                    <div class="vis-v2-track">
+                                        <div class="vis-v2-clip-1"></div>
+                                        <div class="vis-v2-clip-2"></div>
+                                    </div>
+                                    <div class="vis-v1-track">
+                                        <div class="vis-v1-clip-side-left"></div>
+                                        <div class="vis-v1-clip-master">
+                                            <div class="vis-v1-clip-pattern"></div>
+                                            <span class="vis-v1-clip-title">V1_MASTER_RENDER.mov</span>
+                                        </div>
+                                        <div class="vis-v1-clip-side-right"></div>
+                                    </div>
+                                </div>
+                                <div class="vis-playhead-needle">
+                                    <div class="vis-playhead-cap"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3555,8 +4073,14 @@
                                         aria-controls="timeline-details"
                                         data-role-id="prores"
                                     >
-                                        <span class="clip-label">Prores Studio</span>
-                                        <span class="clip-date">Sep 2025 — Present</span>
+                                        <span class="clip-label">
+                                            <span class="lbl-desk">Prores Studio</span>
+                                            <span class="lbl-mob">Prores</span>
+                                        </span>
+                                        <span class="clip-date">
+                                            <span class="date-desk">Sep 2025 — Present</span>
+                                            <span class="date-mob">Sep 25 — Now</span>
+                                        </span>
                                     </button>
                                 </div>
 
@@ -3681,9 +4205,28 @@
                 text: "End-to-end post-production, from raw footage to final export. Story-driven edits with tight pacing, clean cuts and emotion-led storytelling for wedding films, events and cinema.",
                 visual: `
                     <div class="vis-edit-track">
-                        <div class="vis-clip" style="width: 25%"></div>
-                        <div class="vis-clip vis-clip-active" style="width: 45%"></div>
-                        <div class="vis-clip" style="width: 30%"></div>
+                        <div class="vis-tc-ruler">
+                            <span>00:00:00:00</span>
+                            <span>00:01:15:12</span>
+                            <span>00:02:30:00</span>
+                        </div>
+                        <div class="vis-tracks-container">
+                            <div class="vis-v2-track">
+                                <div class="vis-v2-clip-1"></div>
+                                <div class="vis-v2-clip-2"></div>
+                            </div>
+                            <div class="vis-v1-track">
+                                <div class="vis-v1-clip-side-left"></div>
+                                <div class="vis-v1-clip-master">
+                                    <div class="vis-v1-clip-pattern"></div>
+                                    <span class="vis-v1-clip-title">V1_MASTER_RENDER_PRORES.mov</span>
+                                </div>
+                                <div class="vis-v1-clip-side-right"></div>
+                            </div>
+                        </div>
+                        <div class="vis-playhead-needle">
+                            <div class="vis-playhead-cap"></div>
+                        </div>
                     </div>`
             },
             {
@@ -3692,12 +4235,53 @@
                 title: "Color Correction & DI Grading",
                 text: "Technical correction and creative grading in DaVinci Resolve. Balanced exposure, consistent shot matching and film looks built with LUTs to suit the mood of each story.",
                 visual: `
-                    <div class="vis-swatches">
-                        <div class="vis-swatch swatch-1"></div>
-                        <div class="vis-swatch swatch-2"></div>
-                        <div class="vis-swatch swatch-3"></div>
-                        <div class="vis-swatch swatch-4"></div>
-                        <div class="vis-swatch swatch-5"></div>
+                    <div class="vis-swatches" aria-hidden="true">
+                        <div class="vis-wheels-row">
+                            <div class="vis-wheel-item">
+                                <div class="vis-wheel-circle" style="background: #1F2633; border: 1px solid rgba(138, 104, 123, 0.5);">
+                                    <div class="vis-wheel-ring"></div>
+                                    <div class="vis-wheel-dot" style="background: #D4A5B8; transform: translate(-2px, 2px);"></div>
+                                </div>
+                                <div class="vis-wheel-meta">
+                                    <span class="vis-wheel-label" style="color: #8A687B;">LIFT</span>
+                                    <span class="vis-wheel-val">-0.03</span>
+                                </div>
+                            </div>
+                            <div class="vis-wheel-item">
+                                <div class="vis-wheel-circle" style="background: #4B3F50; border: 1px solid rgba(212, 165, 184, 0.5);">
+                                    <div class="vis-wheel-ring"></div>
+                                    <div class="vis-wheel-dot" style="background: #F3E8EB; transform: translate(2px, -2px);"></div>
+                                </div>
+                                <div class="vis-wheel-meta">
+                                    <span class="vis-wheel-label" style="color: #D4A5B8;">GAMMA</span>
+                                    <span class="vis-wheel-val">+0.14</span>
+                                </div>
+                            </div>
+                            <div class="vis-wheel-item">
+                                <div class="vis-wheel-circle" style="background: rgba(138, 104, 123, 0.4); border: 1px solid rgba(243, 232, 235, 0.6);">
+                                    <div class="vis-wheel-ring"></div>
+                                    <div class="vis-wheel-dot" style="background: #e28783; transform: translate(4px, -2px);"></div>
+                                </div>
+                                <div class="vis-wheel-meta">
+                                    <span class="vis-wheel-label" style="color: #D4A5B8;">GAIN</span>
+                                    <span class="vis-wheel-val">1.08</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vis-tonal-container">
+                            <div class="vis-tonal-headers">
+                                <span>SHADOWS (0 IRE)</span>
+                                <span>MIDTONES (50 IRE)</span>
+                                <span>HIGHLIGHTS (100 IRE)</span>
+                            </div>
+                            <div class="vis-tonal-bar">
+                                <div class="vis-tonal-chip vis-chip-1" title="Deep Shadow">#1F2633</div>
+                                <div class="vis-tonal-chip vis-chip-2" title="Dark Mid">#4B3F50</div>
+                                <div class="vis-tonal-chip vis-chip-3" title="Mid Rose">#8A687B</div>
+                                <div class="vis-tonal-chip vis-chip-4" title="Rose Gold">#D4A5B8</div>
+                                <div class="vis-tonal-chip vis-chip-5" title="Specular Blush">#F3E8EB</div>
+                            </div>
+                        </div>
                     </div>`
             },
             {
@@ -3707,12 +4291,26 @@
                 text: "Primary and secondary camera work for live events and studio shoots, plus photography. Strong control of exposure, framing, lighting and lens selection.",
                 visual: `
                     <div class="vis-viewfinder">
-                        <div class="vf-corner vf-tl"></div>
-                        <div class="vf-corner vf-tr"></div>
-                        <div class="vf-corner vf-bl"></div>
-                        <div class="vf-corner vf-br"></div>
-                        <div class="vf-rec"><span class="rec-dot"></span> REC</div>
-                        <span class="vf-crosshair">+</span>
+                        <div class="vf-crop-corner vf-crop-tl"></div>
+                        <div class="vf-crop-corner vf-crop-tr"></div>
+                        <div class="vf-crop-corner vf-crop-bl"></div>
+                        <div class="vf-crop-corner vf-crop-br"></div>
+                        <div class="vf-osd-left">
+                            <div class="vf-rec-badge">
+                                <span class="vf-rec-dot"></span>
+                                <span class="vf-rec-text">REC</span>
+                            </div>
+                            <span class="vf-timecode-text">01:04:12:18</span>
+                        </div>
+                        <div class="vf-osd-center">
+                            <span class="vf-pill-tag">UHD 4K 60P</span>
+                            <span class="vf-pill-tag">LOG-C</span>
+                        </div>
+                        <div class="vf-osd-right">
+                            <span class="vf-setting-badge">f/2.8</span>
+                            <span class="vf-setting-badge">ISO 800</span>
+                            <span class="vf-wb-badge">5600K</span>
+                        </div>
                     </div>`
             },
             {
@@ -3721,11 +4319,47 @@
                 title: "Shorts, Teasers & Motion VFX",
                 text: "Punchy, high-retention teasers and promo content with motion graphics and VFX polish, cut for reels and shorts.",
                 visual: `
-                    <div class="vis-keyframes">
-                        <div class="kf-line"></div>
-                        <div class="kf-diamond" style="left: 10%"></div>
-                        <div class="kf-diamond kf-diamond-active" style="left: 45%"></div>
-                        <div class="kf-diamond" style="left: 85%"></div>
+                    <div class="vis-keyframes" aria-hidden="true">
+                        <div class="vis-pacer-badge">
+                            <div class="vis-phone-frame">
+                                <div class="vis-phone-screen">
+                                    <div class="vis-play-icon"></div>
+                                </div>
+                            </div>
+                            <div class="vis-pacer-meta">
+                                <span class="vis-pacer-label">FORMAT</span>
+                                <span class="vis-pacer-val">9:16 REEL</span>
+                            </div>
+                        </div>
+                        <div class="vis-pacer-segments">
+                            <div class="vis-segment-item vis-seg-hook">
+                                <span class="vis-ping-dot"></span>
+                                <span class="vis-seg-text" style="color: #ffffff;">00-03s HOOK</span>
+                                <div class="vis-bars-wave">
+                                    <span class="vis-wave-bar bar-anim-1" style="background: #e28783;"></span>
+                                    <span class="vis-wave-bar bar-anim-2" style="background: #D4A5B8;"></span>
+                                    <span class="vis-wave-bar bar-anim-3" style="background: #F3E8EB;"></span>
+                                </div>
+                            </div>
+                            <div class="vis-segment-item vis-seg-drop">
+                                <span class="vis-seg-text" style="color: #D4A5B8;">03-08s DROP</span>
+                                <div class="vis-bars-wave">
+                                    <span class="vis-wave-bar bar-anim-4" style="background: #8A687B;"></span>
+                                    <span class="vis-wave-bar bar-anim-2" style="background: #D4A5B8;"></span>
+                                </div>
+                            </div>
+                            <div class="vis-segment-item vis-seg-broll">
+                                <span class="vis-seg-text" style="color: #D4A5B8;">08-15s B-ROLL</span>
+                            </div>
+                            <div class="vis-segment-item vis-seg-cta">
+                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #D4A5B8;"></span>
+                                <span class="vis-seg-text" style="color: #F3E8EB;">15s CTA</span>
+                            </div>
+                        </div>
+                        <div class="vis-pacer-tempo">
+                            <span class="vis-pacer-label">PACE SYNC</span>
+                            <span class="vis-pacer-val" style="color: #e28783;">138 BPM</span>
+                        </div>
                     </div>`
             }
         ];
@@ -3733,42 +4367,18 @@
         const suiteTabsContainer = document.querySelector('.suite-tabs');
         const suiteTabs = document.querySelectorAll('.suite-tab');
         const suitePanelContent = document.getElementById('suite-panel-content');
-        const suitePageSr = document.getElementById('suite-page-sr');
+        const suitePageLabelVal = document.getElementById('suite-page-label-val');
         const suiteTitle = document.getElementById('suite-title');
         const suiteText = document.getElementById('suite-text');
         const suiteVisual = document.getElementById('suite-visual');
         const suitePanel = document.getElementById('suite-panel');
         let currentSuiteTabId = "edit";
 
-        function rollCounter(oldDigit, newDigit) {
-            const wrap = document.querySelector('.counter-roller-wrap');
-            if (!wrap) return;
-            wrap.innerHTML = `
-                <span class="roller-digit roller-out">${oldDigit}</span>
-                <span class="roller-digit roller-in-pre">${newDigit}</span>
-            `;
-            const digitIn = wrap.querySelector('.roller-in-pre');
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    if (digitIn) {
-                        digitIn.classList.remove('roller-in-pre');
-                        digitIn.classList.add('roller-in');
-                    }
-                });
-            });
-            setTimeout(() => {
-                wrap.innerHTML = `<span class="roller-digit roller-static" id="suite-counter-val">${newDigit}</span>`;
-            }, 320);
-        }
-
         function switchSuite(tabId) {
             if (tabId === currentSuiteTabId) return;
             const dataIndex = suiteData.findIndex(item => item.id === tabId);
             if (dataIndex === -1) return;
             const data = suiteData[dataIndex];
-            const oldIndex = suiteData.findIndex(item => item.id === currentSuiteTabId);
-            const oldNumber = oldIndex !== -1 ? suiteData[oldIndex].pageLabel.split(' ')[0] : '01';
-            const newNumber = data.pageLabel.split(' ')[0];
             currentSuiteTabId = tabId;
 
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -3800,9 +4410,7 @@
 
             if (prefersReducedMotion || !suitePanelContent) {
                 // Instant update without animation for reduced motion
-                const wrap = document.querySelector('.counter-roller-wrap');
-                if (wrap) wrap.innerHTML = `<span class="roller-digit roller-static" id="suite-counter-val">${newNumber}</span>`;
-                if (suitePageSr) suitePageSr.textContent = data.pageLabel;
+                if (suitePageLabelVal) suitePageLabelVal.textContent = data.pageLabel;
                 if (suiteTitle) suiteTitle.textContent = data.title;
                 if (suiteText) suiteText.textContent = data.text;
                 if (suiteVisual) suiteVisual.innerHTML = data.visual;
@@ -3813,9 +4421,8 @@
             suitePanelContent.classList.add('is-fading-out');
 
             setTimeout(() => {
-                // 4. Update content & trigger counter rolling
-                rollCounter(oldNumber, newNumber);
-                if (suitePageSr) suitePageSr.textContent = data.pageLabel;
+                // 4. Update content cleanly
+                if (suitePageLabelVal) suitePageLabelVal.textContent = data.pageLabel;
                 if (suiteTitle) suiteTitle.textContent = data.title;
                 if (suiteText) suiteText.textContent = data.text;
                 if (suiteVisual) suiteVisual.innerHTML = data.visual;
@@ -3956,6 +4563,16 @@
                 }
             });
         });
+
+        // Ensure clip-path is cleanly removed when timeline entrance animation finishes
+        const timelineClipsTrack = document.querySelector('.timeline-clips-track');
+        if (timelineClipsTrack) {
+            timelineClipsTrack.addEventListener('animationend', (e) => {
+                if (e.animationName === 'timelineClipsGrow') {
+                    timelineClipsTrack.style.clipPath = 'none';
+                }
+            });
+        }
 
         // Current year
         const yearEl = document.getElementById('year');
