@@ -53,6 +53,7 @@
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .bg-effects {
@@ -185,6 +186,27 @@
             font-size: 35px;
             font-weight: 700;
             margin: 0;
+        }
+
+        .header-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-datetime {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--muted);
+            opacity: 0.9;
+        }
+
+        .header-datetime-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         p.sub {
@@ -962,6 +984,7 @@
 
         /* Details Panel */
         .timeline-details-panel {
+            position: relative;
             margin-top: 18px;
             padding: 18px 20px;
             border-radius: 12px;
@@ -969,8 +992,30 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-top: 1px solid rgba(255, 255, 255, 0.14);
             box-sizing: border-box;
-            transition: opacity 0.18s ease;
+            overflow: hidden;
+            transition: opacity 0.18s ease, border-color 0.32s ease;
             min-height: 148px;
+        }
+
+        .timeline-details-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 170, 170, 0.45), transparent);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .timeline-details-panel:hover {
+            border-color: rgba(255, 170, 170, 0.28);
+        }
+
+        .timeline-details-panel:hover::before {
+            opacity: 1;
         }
 
         .timeline-details-panel.is-updating {
@@ -1165,6 +1210,10 @@
             padding: 8px 0;
             mask-image: linear-gradient(90deg, transparent 0%, black 14%, black 86%, transparent 100%);
             -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 14%, black 86%, transparent 100%);
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .marquee-row {
@@ -1172,6 +1221,8 @@
             align-items: center;
             overflow: hidden;
             user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
             padding: 18px 0;
             box-sizing: border-box;
         }
@@ -1197,6 +1248,9 @@
             gap: 52px;
             will-change: transform;
             height: 100%;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .marquee-track-left {
@@ -1237,9 +1291,19 @@
             flex-shrink: 0;
             border-radius: 16px;
             opacity: 0.88;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+            -webkit-user-select: none;
+            outline: none;
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
                         filter 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
                         opacity 0.35s ease;
+        }
+
+        .software-icon-card:focus,
+        .software-icon-card:active {
+            outline: none;
         }
 
         .software-icon-card img,
@@ -1251,6 +1315,7 @@
             filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.5));
             transition: filter 0.35s ease;
             user-select: none;
+            -webkit-user-select: none;
             -webkit-user-drag: none;
             pointer-events: none;
         }
@@ -1278,7 +1343,17 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             background: rgba(255, 255, 255, 0.02);
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+            -webkit-user-select: none;
+            outline: none;
             transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .software-name-item:focus,
+        .software-name-item:active {
+            outline: none;
         }
 
         .software-name-dot {
@@ -1422,9 +1497,14 @@
                 background: radial-gradient(circle, rgba(255, 210, 180, 0.12), transparent 70%) !important;
             }
 
-            /* Remove spotlight overlay on mobile */
+            /* Static upper-center ambient glow on mobile (0 CPU/GPU tracking) */
             .spotlight {
-                display: none !important;
+                display: block !important;
+                opacity: 0.85 !important;
+                background: radial-gradient(440px circle at 50% 22%,
+                    rgba(255, 170, 170, 0.18) 0%,
+                    rgba(139, 92, 246, 0.09) 45%,
+                    transparent 70%) !important;
             }
 
             /* Replace GPU texture-heavy backdrop-filter: blur with lightweight solid dark glass */
@@ -1451,6 +1531,33 @@
 
             header {
                 flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .header-brand {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                width: 100%;
+            }
+
+            .header-brand h1 {
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            .header-datetime {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .controls {
+                display: flex;
+                justify-content: center;
+                width: 100%;
             }
 
             .hero {
@@ -1499,6 +1606,57 @@
                 width: 100%;
                 max-width: 100%;
             }
+
+            /* Glowing borders & highlighted active state on mobile without hover */
+            .card,
+            .card-base,
+            .hero-text,
+            .timeline-details-panel {
+                border-color: rgba(255, 170, 170, 0.32) !important;
+                box-shadow: 0 16px 40px -10px rgba(255, 170, 170, 0.16), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+            }
+
+            .card::before,
+            .hero-text::before,
+            .timeline-details-panel::before {
+                opacity: 1 !important;
+            }
+
+            .btn,
+            .primary {
+                box-shadow: 0 8px 22px rgba(255, 170, 170, 0.32) !important;
+            }
+
+            /* Lighter, subtle button glow specifically for the hero "I don't just edit" card on mobile */
+            .hero-text #whatsappBtn,
+            .hero-text .primary {
+                box-shadow: 0 4px 14px rgba(255, 170, 170, 0.22) !important;
+            }
+
+            .hero-text #viewProjectsBtn,
+            .hero-text .link:not(.primary) {
+                box-shadow: none !important;
+                border-color: rgba(255, 255, 255, 0.16) !important;
+            }
+
+            .tag {
+                color: #ffffff !important;
+                border-color: rgba(255, 170, 170, 0.38) !important;
+                background: rgba(255, 170, 170, 0.1) !important;
+                box-shadow: 0 0 12px rgba(255, 170, 170, 0.15) !important;
+            }
+
+            .link {
+                border-color: rgba(255, 170, 170, 0.35) !important;
+                background: rgba(255, 170, 170, 0.06) !important;
+                color: #ffffff !important;
+            }
+
+            .software-name-item {
+                border-color: rgba(255, 170, 170, 0.28) !important;
+                background: rgba(255, 170, 170, 0.06) !important;
+                color: #ffffff !important;
+            }
         }
 
         @media (hover: none) or (pointer: coarse) {
@@ -1513,7 +1671,12 @@
             }
 
             .spotlight {
-                display: none !important;
+                display: block !important;
+                opacity: 0.85 !important;
+                background: radial-gradient(440px circle at 50% 22%,
+                    rgba(255, 170, 170, 0.18) 0%,
+                    rgba(139, 92, 246, 0.09) 45%,
+                    transparent 70%) !important;
             }
 
             .card-base,
@@ -1531,6 +1694,57 @@
             .polaroid:hover {
                 transform: rotate(-2deg) !important;
                 box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), 0 3px 8px rgba(0, 0, 0, 0.35) !important;
+            }
+
+            /* Glowing borders & highlighted active state on touch devices */
+            .card,
+            .card-base,
+            .hero-text,
+            .timeline-details-panel {
+                border-color: rgba(255, 170, 170, 0.32) !important;
+                box-shadow: 0 16px 40px -10px rgba(255, 170, 170, 0.16), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+            }
+
+            .card::before,
+            .hero-text::before,
+            .timeline-details-panel::before {
+                opacity: 1 !important;
+            }
+
+            .btn,
+            .primary {
+                box-shadow: 0 8px 22px rgba(255, 170, 170, 0.32) !important;
+            }
+
+            /* Lighter, subtle button glow specifically for the hero "I don't just edit" card on mobile */
+            .hero-text #whatsappBtn,
+            .hero-text .primary {
+                box-shadow: 0 4px 14px rgba(255, 170, 170, 0.22) !important;
+            }
+
+            .hero-text #viewProjectsBtn,
+            .hero-text .link:not(.primary) {
+                box-shadow: none !important;
+                border-color: rgba(255, 255, 255, 0.16) !important;
+            }
+
+            .tag {
+                color: #ffffff !important;
+                border-color: rgba(255, 170, 170, 0.38) !important;
+                background: rgba(255, 170, 170, 0.1) !important;
+                box-shadow: 0 0 12px rgba(255, 170, 170, 0.15) !important;
+            }
+
+            .link {
+                border-color: rgba(255, 170, 170, 0.35) !important;
+                background: rgba(255, 170, 170, 0.06) !important;
+                color: #ffffff !important;
+            }
+
+            .software-name-item {
+                border-color: rgba(255, 170, 170, 0.28) !important;
+                background: rgba(255, 170, 170, 0.06) !important;
+                color: #ffffff !important;
             }
         }
 
@@ -1621,14 +1835,12 @@
     <div class="container" role="main">
         <!-- Header -->
         <header>
-            <div>
+            <div class="header-brand">
                 <h1>Portfolio</h1>
 
                 <!-- LIVE DATE & TIME (with icons) -->
-                <div
-                    style="margin-top: 8px; display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--muted); opacity: 0.9;">
-
-                    <div style="display: flex; align-items: center; gap: 6px;">
+                <div class="header-datetime">
+                    <div class="header-datetime-item">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <circle cx="12" cy="12" r="10" />
@@ -1637,7 +1849,7 @@
                         <span id="liveTime"></span>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 6px;">
+                    <div class="header-datetime-item">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <rect x="3" y="4" width="18" height="18" rx="2" />
@@ -1645,7 +1857,6 @@
                         </svg>
                         <span id="liveDate"></span>
                     </div>
-
                 </div>
             </div>
 
