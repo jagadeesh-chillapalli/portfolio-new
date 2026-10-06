@@ -625,28 +625,24 @@
             color: var(--muted);
         }
 
-        .projects {
+        /* Edit Suites - DaVinci Resolve Page Bar Tabbed Deck */
+        .suite-deck {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
+            grid-template-columns: 220px 1fr;
+            padding: 0;
             margin-top: 8px;
-        }
-
-        .card {
-            padding: 30px;
-            border-radius: 14px;
-            background: rgba(18, 18, 24, 0.68);
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            background: rgba(18, 18, 24, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-top: 1px solid rgba(255, 255, 255, 0.16);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            transition: box-shadow .32s ease, border-color .32s ease;
-            position: relative;
+            border-radius: 14px;
             overflow: hidden;
+            box-sizing: border-box;
+            box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            transition: border-color 0.32s ease, box-shadow 0.32s ease;
+            position: relative;
         }
 
-        .card::before {
+        .suite-deck::before {
             content: '';
             position: absolute;
             top: 0;
@@ -656,58 +652,855 @@
             background: linear-gradient(90deg, transparent, rgba(255, 170, 170, 0.4), transparent);
             opacity: 0;
             transition: opacity .35s ease;
+            pointer-events: none;
         }
 
-        .card:hover {
-            transform: none;
+        .suite-deck:hover {
             border-color: rgba(255, 170, 170, 0.28);
             box-shadow: 0 20px 45px -10px rgba(255, 170, 170, 0.12), 0 10px 25px rgba(0, 0, 0, 0.4);
         }
 
-        .card:hover::before {
+        .suite-deck:hover::before {
             opacity: 1;
         }
 
-        .card h4 {
-            margin: 0 0 8px;
-            font-size: 16px;
-        }
-
-        .card p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .tags {
+        /* Left Tabs Column (Resolve Page Bar) */
+        .suite-tabs {
+            position: relative;
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 12px;
+            flex-direction: column;
+            background: rgba(13, 14, 19, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px 12px;
+            gap: 6px;
+            box-sizing: border-box;
+            --active-idx: 0;
         }
 
-        .tag {
-            font-size: 12px;
-            padding: 6px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
+        /* Sliding Tab Highlight Element */
+        .suite-tab-indicator {
+            position: absolute;
+            top: 14px;
+            left: 12px;
+            width: calc(100% - 24px);
+            height: 44px;
+            border-radius: 9px;
+            background: rgba(255, 170, 170, 0.12);
+            border: 1px solid rgba(255, 170, 170, 0.35);
+            border-left: 3px solid var(--pink, #ffaaaa);
+            pointer-events: none;
+            z-index: 1;
+            transform: translate3d(0, calc(var(--active-idx, 0) * 50px), 0);
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+        }
+
+        .suite-tab {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            height: 44px;
+            border-radius: 9px;
+            border: 1px solid transparent;
+            background: transparent;
             color: var(--muted);
-            background: rgba(255, 255, 255, 0.03);
-            transition: all .25s ease;
+            cursor: pointer;
+            text-align: left;
+            font-size: 13.5px;
+            font-weight: 600;
+            font-family: inherit;
+            transition: color 0.2s ease, filter 0.2s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .tag:hover {
+        .suite-tab:focus-visible {
+            outline: 2px solid var(--pink, #ffaaaa);
+            outline-offset: 2px;
+        }
+
+        .suite-tab:hover {
             color: #ffffff;
-            border-color: rgba(255, 170, 170, 0.35);
-            background: rgba(255, 170, 170, 0.08);
-            transform: translateY(-1px);
+            filter: brightness(1.08);
         }
 
-        .two-cols {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-            margin-top: 12px;
+        .suite-tab-icon {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+            opacity: 0.75;
+            transition: opacity 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Desktop hover on unselected tab's icon */
+        @media (hover: hover) and (pointer: fine) {
+            .suite-tab:not(.is-active):hover .suite-tab-icon {
+                transform: translateY(-2px);
+            }
+        }
+
+        /* One-time icon nudge animation when tab is selected */
+        @keyframes suiteIconNudge {
+            0% { transform: translateY(0); }
+            40% { transform: translateY(-2px); }
+            100% { transform: translateY(0); }
+        }
+
+        .suite-tab.is-nudging .suite-tab-icon {
+            animation: suiteIconNudge 300ms ease-out;
+        }
+
+        .suite-tab.is-active,
+        .suite-tab[aria-selected="true"] {
+            color: #ffffff;
+            background: transparent;
+            border-color: transparent;
+        }
+
+        .suite-tab.is-active .suite-tab-icon,
+        .suite-tab[aria-selected="true"] .suite-tab-icon {
+            opacity: 1;
+            stroke: var(--pink, #ffaaaa);
+        }
+
+        /* Right Panel */
+        .suite-panel {
+            padding: 30px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 250px;
+            box-sizing: border-box;
+            background: transparent;
+        }
+
+        .suite-panel-content {
+            opacity: 1;
+            transition: opacity 120ms ease;
+        }
+
+        .suite-panel-content.is-fading-out {
+            opacity: 0;
+        }
+
+        /* Staggered Element Entrance on Panel Change */
+        .suite-stagger-item {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: calc(var(--stagger-idx, 0) * 70ms);
+        }
+
+        .suite-panel-content.is-entering .suite-stagger-item {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: none !important;
+        }
+
+        /* Page Label with Rolling Counter */
+        .suite-page-label {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--pink, #ffaaaa);
+            opacity: 0.85;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+        }
+
+        .counter-roller-wrap {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            vertical-align: middle;
+            height: 1.15em;
+            line-height: 1.15em;
+        }
+
+        .roller-digit {
+            display: inline-block;
+            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms ease;
+        }
+
+        .roller-digit.roller-static {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .roller-digit.roller-out {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .roller-digit.roller-in {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .roller-digit.roller-in-pre {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .suite-title {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+            line-height: 1.3;
+        }
+
+        .suite-text {
+            margin: 0;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: var(--muted);
+            max-width: 680px;
+        }
+
+        /* Decorative Visual Strips */
+        .suite-visual-wrap {
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* 1. Edit Visual: Timeline Clip Bars & Sweeping Playhead */
+        .vis-edit-track {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 28px;
+            background: #14151e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 4px;
+            box-sizing: border-box;
+            max-width: 360px;
+            overflow: hidden;
+        }
+
+        .vis-clip {
+            height: 100%;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateX(-16px);
+            animation: clipSlideIn 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .vis-clip-1 {
+            animation-delay: 0ms;
+        }
+
+        .vis-clip-2 {
+            animation-delay: 80ms;
+        }
+
+        .vis-clip-3 {
+            animation-delay: 160ms;
+        }
+
+        @keyframes clipSlideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .vis-clip-active {
+            background: linear-gradient(90deg, rgba(225, 75, 110, 0.8), rgba(185, 45, 80, 0.9));
+            border-color: rgba(255, 170, 170, 0.6);
+            box-shadow: 0 0 10px rgba(255, 170, 170, 0.25);
+        }
+
+        .vis-edit-playhead-sweep {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            animation: editPlayheadSweep 4s linear infinite;
+        }
+
+        .vis-edit-playhead-sweep::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 2px;
+            background: var(--pink, #ffaaaa);
+            border-radius: 1px;
+            box-shadow: 0 0 8px rgba(255, 170, 170, 0.85);
+        }
+
+        @keyframes editPlayheadSweep {
+            0% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+            4% {
+                opacity: 1;
+            }
+            96% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* 2. Color Visual: 5 Graded Swatches Wave & Light Sweep */
+        .vis-swatches {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 360px;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .vis-swatch {
+            flex: 1;
+            height: 24px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            opacity: 0;
+            transform: scale(0.65) translateY(6px);
+            animation: swatchPop 380ms cubic-bezier(0.16, 1, 0.3, 1) calc(var(--swatch-idx, 0) * 60ms) forwards;
+        }
+
+        @keyframes swatchPop {
+            70% {
+                transform: scale(1.06) translateY(-2px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .swatch-1 { background: #1a3644; }
+        .swatch-2 { background: #264e5a; }
+        .swatch-3 { background: #5a5468; }
+        .swatch-4 { background: #964d60; }
+        .swatch-5 { background: #d4667a; border-color: rgba(255, 170, 170, 0.5); }
+
+        .vis-swatch-glimmer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            animation: swatchLightSweep 4s ease-in-out infinite;
+        }
+
+        .vis-swatch-glimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transform: skewX(-20deg);
+        }
+
+        @keyframes swatchLightSweep {
+            0%, 20% {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            25% {
+                opacity: 1;
+            }
+            55% {
+                transform: translateX(450px);
+                opacity: 1;
+            }
+            60%, 100% {
+                transform: translateX(450px);
+                opacity: 0;
+            }
+        }
+
+        /* 3. Camera Visual: Viewfinder with Autofocus Lock & 1s REC */
+        .vis-viewfinder {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            width: 260px;
+            height: 38px;
+            padding: 6px 14px;
+            border-radius: 4px;
+            background: #14151e;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .vf-corner {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: rgba(255, 255, 255, 0.4);
+            animation-duration: 500ms;
+            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+            animation-fill-mode: forwards;
+        }
+
+        .vf-tl {
+            top: 3px;
+            left: 3px;
+            border-top: 2px solid;
+            border-left: 2px solid;
+            animation-name: afLockTL;
+        }
+
+        .vf-tr {
+            top: 3px;
+            right: 3px;
+            border-top: 2px solid;
+            border-right: 2px solid;
+            animation-name: afLockTR;
+        }
+
+        .vf-bl {
+            bottom: 3px;
+            left: 3px;
+            border-bottom: 2px solid;
+            border-left: 2px solid;
+            animation-name: afLockBL;
+        }
+
+        .vf-br {
+            bottom: 3px;
+            right: 3px;
+            border-bottom: 2px solid;
+            border-right: 2px solid;
+            animation-name: afLockBR;
+        }
+
+        @keyframes afLockTL {
+            from {
+                transform: translate(-3px, -3px) scale(1.3);
+                opacity: 0.3;
+            }
+            to {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes afLockTR {
+            from {
+                transform: translate(3px, -3px) scale(1.3);
+                opacity: 0.3;
+            }
+            to {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes afLockBL {
+            from {
+                transform: translate(-3px, 3px) scale(1.3);
+                opacity: 0.3;
+            }
+            to {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes afLockBR {
+            from {
+                transform: translate(3px, 3px) scale(1.3);
+                opacity: 0.3;
+            }
+            to {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .vf-rec {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--pink, #ffaaaa);
+            letter-spacing: 0.08em;
+        }
+
+        .rec-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ff5577;
+            animation: recBlink1s 1s ease-in-out infinite;
+        }
+
+        @keyframes recBlink1s {
+            0%, 45% {
+                opacity: 1;
+            }
+            50%, 95% {
+                opacity: 0.2;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .vf-crosshair {
+            display: inline-block;
+            font-family: ui-monospace, monospace;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.45);
+            animation: crosshairPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes crosshairPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.45;
+            }
+            50% {
+                transform: scale(1.18);
+                opacity: 0.85;
+                color: var(--pink, #ffaaaa);
+            }
+        }
+
+        /* 4. Motion Visual: Keyframe Diamonds & Traveling Playhead */
+        .vis-keyframes {
+            position: relative;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            max-width: 320px;
+            overflow: hidden;
+        }
+
+        .kf-line {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .kf-runner {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            width: 100%;
+            animation: kfTravel 4s linear infinite;
+        }
+
+        .kf-runner::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 3px;
+            height: 14px;
+            background: var(--pink, #ffaaaa);
+            border-radius: 2px;
+            transform: translateY(-50%);
+            box-shadow: 0 0 8px rgba(255, 170, 170, 0.85);
+        }
+
+        @keyframes kfTravel {
+            0% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+            4% {
+                opacity: 1;
+            }
+            96% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .kf-diamond {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #2a2c3a;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            transform: translateY(-50%) rotate(45deg);
+            top: 50%;
+        }
+
+        .kf-d1 {
+            animation: diamondPulse1 4s ease-out infinite;
+        }
+
+        .kf-d2 {
+            animation: diamondPulse2 4s ease-out infinite;
+        }
+
+        .kf-d3 {
+            animation: diamondPulse3 4s ease-out infinite;
+        }
+
+        @keyframes diamondPulse1 {
+            0%, 10% {
+                transform: translateY(-50%) rotate(45deg) scale(1);
+                filter: brightness(1);
+            }
+            15% {
+                transform: translateY(-50%) rotate(45deg) scale(1.35);
+                filter: brightness(1.5);
+                border-color: #ffffff;
+                background: var(--pink, #ffaaaa);
+                box-shadow: 0 0 10px rgba(255, 170, 170, 0.8);
+            }
+            22%, 100% {
+                transform: translateY(-50%) rotate(45deg) scale(1);
+                filter: brightness(1);
+            }
+        }
+
+        @keyframes diamondPulse2 {
+            0%, 45% {
+                transform: translateY(-50%) rotate(45deg) scale(1);
+                filter: brightness(1);
+            }
+            50% {
+                transform: translateY(-50%) rotate(45deg) scale(1.35);
+                filter: brightness(1.5);
+                border-color: #ffffff;
+                box-shadow: 0 0 12px rgba(255, 170, 170, 0.9);
+            }
+            57%, 100% {
+                transform: translateY(-50%) rotate(45deg) scale(1);
+                filter: brightness(1);
+            }
+        }
+
+        @keyframes diamondPulse3 {
+            0%, 80% {
+                transform: translateY(-50%) rotate(45deg) scale(1);
+                filter: brightness(1);
+            }
+            85% {
+                transform: translateY(-50%) rotate(45deg) scale(1.35);
+                filter: brightness(1.5);
+                border-color: #ffffff;
+                background: var(--pink, #ffaaaa);
+                box-shadow: 0 0 10px rgba(255, 170, 170, 0.8);
+            }
+            92%, 100% {
+                transform: translateY(-50%) rotate(45deg) scale(1);
+                filter: brightness(1);
+            }
+        }
+
+        .kf-diamond-active {
+            background: var(--pink, #ffaaaa);
+            border-color: #ffffff;
+            box-shadow: 0 0 8px rgba(255, 170, 170, 0.5);
+        }
+
+        /* Pause all animations when deck is off-screen or tab is hidden */
+        .suite-deck.is-paused * {
+            animation-play-state: paused !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #projects.reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+            .suite-tab-indicator {
+                transition: none !important;
+            }
+
+            .suite-panel-content,
+            .suite-stagger-item,
+            .roller-digit,
+            .suite-tab-icon {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+
+            .vis-clip,
+            .vis-edit-playhead-sweep,
+            .vis-swatch,
+            .vis-swatch-glimmer,
+            .vf-corner,
+            .rec-dot,
+            .vf-crosshair,
+            .kf-runner,
+            .kf-diamond {
+                animation: none !important;
+                opacity: 1 !important;
+                filter: none !important;
+            }
+
+            .vis-clip {
+                transform: none !important;
+            }
+
+            .vis-swatch {
+                transform: none !important;
+            }
+
+            .vf-corner {
+                transform: none !important;
+            }
+
+            .vf-crosshair {
+                transform: none !important;
+            }
+
+            .kf-diamond {
+                transform: translateY(-50%) rotate(45deg) !important;
+            }
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 768px) {
+            .suite-deck {
+                grid-template-columns: 1fr;
+            }
+
+            .suite-tabs {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                overflow: hidden;
+                overflow-x: hidden;
+                scroll-snap-type: none;
+                -webkit-overflow-scrolling: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 6px;
+                gap: 5px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .suite-tab-indicator {
+                top: 6px;
+                left: 6px;
+                width: calc((100% - 12px - 15px) / 4);
+                height: calc(100% - 12px);
+                border-radius: 8px;
+                border: 1px solid rgba(255, 170, 170, 0.35);
+                border-bottom: 2px solid var(--pink, #ffaaaa);
+                border-left: 1px solid rgba(255, 170, 170, 0.35);
+                transform: translate3d(calc(var(--active-idx, 0) * (100% + 5px)), 0, 0);
+                transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .suite-tab {
+                height: auto;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 8px 3px;
+                gap: 4px;
+                width: 100%;
+                box-sizing: border-box;
+                border-radius: 8px;
+                border: 1px solid transparent;
+            }
+
+            .suite-tab span {
+                font-size: 12px;
+                line-height: 1.1;
+                white-space: nowrap;
+                letter-spacing: -0.01em;
+            }
+
+            .suite-tab-icon {
+                width: 16px;
+                height: 16px;
+            }
+
+            .suite-tab.is-active,
+            .suite-tab[aria-selected="true"] {
+                background: transparent;
+                border: 1px solid transparent;
+            }
+
+            .suite-panel {
+                padding: 20px 16px;
+                min-height: 220px;
+            }
+
+            .suite-title {
+                font-size: 18px;
+            }
+
+            .suite-text {
+                font-size: 13.5px;
+            }
+
+            /* Decorative visual strips span full width of panel on mobile */
+            .suite-visual-wrap {
+                margin-top: 18px;
+                padding-top: 14px;
+                width: 100%;
+            }
+
+            .vis-edit-track,
+            .vis-swatches,
+            .vis-viewfinder,
+            .vis-keyframes {
+                max-width: 100% !important;
+                width: 100% !important;
+                box-sizing: border-box;
+            }
+        }
+
+        #projects.reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #projects.reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .reveal {
@@ -1505,8 +2298,39 @@
                 display: none !important;
             }
 
+            .timeline-stage-col {
+                gap: 6px;
+                padding-top: 14px;
+            }
+
+            .timeline-ruler {
+                height: 20px;
+            }
+
             .ruler-year {
                 font-size: 10px;
+                bottom: 2px;
+            }
+
+            .ruler-tick {
+                height: 5px;
+            }
+
+            .ruler-tick.tick-sub {
+                height: 3px;
+            }
+
+            .timeline-playhead {
+                top: -30px;
+            }
+
+            .playhead-badge {
+                top: -16px;
+                left: 50%;
+                transform: translateX(-80%);
+                font-size: 8.5px;
+                padding: 1px 4px;
+                letter-spacing: 0.04em;
             }
 
             .timeline-details-panel {
@@ -1975,7 +2799,7 @@
             }
 
             /* Glowing borders & highlighted active state on mobile without hover */
-            .card,
+            .suite-deck,
             .card-base,
             .hero-text,
             .timeline-details-panel {
@@ -1983,7 +2807,7 @@
                 box-shadow: 0 16px 40px -10px rgba(255, 170, 170, 0.16), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
             }
 
-            .card::before,
+            .suite-deck::before,
             .hero-text::before,
             .timeline-details-panel::before {
                 opacity: 1 !important;
@@ -2004,13 +2828,6 @@
             .hero-text .link:not(.primary) {
                 box-shadow: none !important;
                 border-color: rgba(255, 255, 255, 0.16) !important;
-            }
-
-            .tag {
-                color: #ffffff !important;
-                border-color: rgba(255, 170, 170, 0.38) !important;
-                background: rgba(255, 170, 170, 0.1) !important;
-                box-shadow: 0 0 12px rgba(255, 170, 170, 0.15) !important;
             }
 
             .link {
@@ -2064,7 +2881,7 @@
             }
 
             /* Glowing borders & highlighted active state on touch devices */
-            .card,
+            .suite-deck,
             .card-base,
             .hero-text,
             .timeline-details-panel {
@@ -2072,7 +2889,7 @@
                 box-shadow: 0 16px 40px -10px rgba(255, 170, 170, 0.16), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
             }
 
-            .card::before,
+            .suite-deck::before,
             .hero-text::before,
             .timeline-details-panel::before {
                 opacity: 1 !important;
@@ -2093,13 +2910,6 @@
             .hero-text .link:not(.primary) {
                 box-shadow: none !important;
                 border-color: rgba(255, 255, 255, 0.16) !important;
-            }
-
-            .tag {
-                color: #ffffff !important;
-                border-color: rgba(255, 170, 170, 0.38) !important;
-                background: rgba(255, 170, 170, 0.1) !important;
-                box-shadow: 0 0 12px rgba(255, 170, 170, 0.15) !important;
             }
 
             .link {
@@ -2124,14 +2934,6 @@
         }
 
         @media (max-width:580px) {
-
-            .projects {
-                grid-template-columns: 1fr;
-            }
-
-            .two-cols {
-                grid-template-columns: 1fr;
-            }
 
             .polaroid {
                 max-width: 260px;
@@ -2328,50 +3130,115 @@
             </div>
 
 
-            <div class="projects">
+            <div class="suite-deck" role="region" aria-label="Edit Suites and Post-Production Services">
+                <!-- Left Column / Mobile Top Row: 4 Tabs -->
+                <div class="suite-tabs" role="tablist" aria-label="Edit Suites Navigation" aria-orientation="vertical" style="--active-idx: 0;">
+                    <!-- Sliding highlight indicator -->
+                    <div class="suite-tab-indicator" id="suite-tab-indicator" aria-hidden="true"></div>
 
-                <article class="card">
-                    <h4>Cinematic Event &amp; Film Editing</h4>
-                    <p>End-to-end post-production, from raw footage to final export. Story-driven edits with tight pacing, clean cuts and emotion-led storytelling for wedding films, events and cinema.</p>
-                    <div class="tags">
-                        <span class="tag">Premiere Pro</span>
-                        <span class="tag">DaVinci Resolve</span>
-                        <span class="tag">Visual Storytelling</span>
-                        <span class="tag">Post-Production</span>
-                    </div>
-                </article>
+                    <button
+                        type="button"
+                        class="suite-tab is-active"
+                        role="tab"
+                        id="tab-edit"
+                        aria-selected="true"
+                        aria-controls="suite-panel"
+                        data-tab-id="edit"
+                        tabindex="0"
+                    >
+                        <svg class="suite-tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="6" cy="6" r="3"></circle>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                            <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                            <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+                        </svg>
+                        <span>Edit</span>
+                    </button>
 
-                <article class="card">
-                    <h4>Color Correction &amp; DI Grading</h4>
-                    <p>Technical correction and creative grading in DaVinci Resolve. Balanced exposure, consistent shot matching and film looks built with LUTs to suit the mood of each story.</p>
-                    <div class="tags">
-                        <span class="tag">DaVinci Resolve</span>
-                        <span class="tag">Color Science</span>
-                        <span class="tag">LUTs &amp; Creative Grading</span>
-                        <span class="tag">Digital Intermediate (DI)</span>
-                    </div>
-                </article>
+                    <button
+                        type="button"
+                        class="suite-tab"
+                        role="tab"
+                        id="tab-color"
+                        aria-selected="false"
+                        aria-controls="suite-panel"
+                        data-tab-id="color"
+                        tabindex="-1"
+                    >
+                        <svg class="suite-tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+                            <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                            <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                            <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+                            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+                        </svg>
+                        <span>Color</span>
+                    </button>
 
-                <article class="card">
-                    <h4>Camera Operation, Videography &amp; Photography</h4>
-                    <p>Primary and secondary camera work for live events and studio shoots, plus photography. Strong control of exposure, framing, lighting and lens selection.</p>
-                    <div class="tags">
-                        <span class="tag">Camera Handling</span>
-                        <span class="tag">Lighting &amp; Framing</span>
-                        <span class="tag">Lens &amp; Exposure</span>
-                        <span class="tag">Photography</span>
-                    </div>
-                </article>
+                    <button
+                        type="button"
+                        class="suite-tab"
+                        role="tab"
+                        id="tab-camera"
+                        aria-selected="false"
+                        aria-controls="suite-panel"
+                        data-tab-id="camera"
+                        tabindex="-1"
+                    >
+                        <svg class="suite-tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <span>Camera</span>
+                    </button>
 
-                <article class="card">
-                    <h4>Shorts, Teasers &amp; Motion VFX</h4>
-                    <p>Punchy, high-retention teasers and promo content with motion graphics and VFX polish, cut for reels and shorts.</p>
-                    <div class="tags">
-                        <span class="tag">After Effects</span>
-                        <span class="tag">Canva</span>
-                        <span class="tag">Shorts &amp; Teasers</span>
+                    <button
+                        type="button"
+                        class="suite-tab"
+                        role="tab"
+                        id="tab-motion"
+                        aria-selected="false"
+                        aria-controls="suite-panel"
+                        data-tab-id="motion"
+                        tabindex="-1"
+                    >
+                        <svg class="suite-tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                        <span>Motion</span>
+                    </button>
+                </div>
+
+                <!-- Right Column: Single Panel Display -->
+                <div
+                    class="suite-panel"
+                    id="suite-panel"
+                    role="tabpanel"
+                    aria-labelledby="tab-edit"
+                >
+                    <div class="suite-panel-content" id="suite-panel-content">
+                        <div class="suite-page-label suite-stagger-item" id="suite-page-label" style="--stagger-idx: 0;">
+                            <span class="counter-roller-wrap" aria-hidden="true">
+                                <span class="roller-digit roller-static" id="suite-counter-val">01</span>
+                            </span>
+                            <span class="sr-only" id="suite-page-sr">01 / 04</span>
+                            <span aria-hidden="true">&nbsp;/ 04</span>
+                        </div>
+                        <h4 class="suite-title suite-stagger-item" id="suite-title" style="--stagger-idx: 1;">Cinematic Event &amp; Film Editing</h4>
+                        <p class="suite-text suite-stagger-item" id="suite-text" style="--stagger-idx: 2;">End-to-end post-production, from raw footage to final export. Story-driven edits with tight pacing, clean cuts and emotion-led storytelling for wedding films, events and cinema.</p>
+                        
+                        <div class="suite-visual-wrap suite-stagger-item" id="suite-visual" aria-hidden="true" style="--stagger-idx: 3;">
+                            <div class="vis-edit-track">
+                                <div class="vis-clip" style="width: 25%"></div>
+                                <div class="vis-clip vis-clip-active" style="width: 45%"></div>
+                                <div class="vis-clip" style="width: 30%"></div>
+                            </div>
+                        </div>
                     </div>
-                </article>
+                </div>
             </div>
         </section>
 
@@ -2717,7 +3584,7 @@
                     </div>
                     <div class="details-subtitle" id="details-subtitle">Studio Video Content, Camera &amp; Color Grading</div>
                     <p class="details-desc" id="details-desc">
-                        I edit and deliver cinematic video for studio and client projects, taking them from raw footage to final export. On shoots I handle camera operation, framing, exposure and lens selection, and I finish each project with professional color correction and creative grading in DaVinci Resolve and Adobe Premiere Pro.
+                        Handled end-to-end video editing and color grading for studio productions, client shoots, and promotional content. Operated primary cameras on set, managed media ingestion, shot assembly, pacing, audio sync, and final delivery in DaVinci Resolve and Premiere Pro.
                     </p>
                 </div>
             </div>
@@ -2805,6 +3672,195 @@
             revealElements.forEach(el => observer.observe(el));
         }
 
+        // Edit Suites Tab Data (DaVinci Resolve Page Bar Interface)
+        const suiteData = [
+            {
+                id: "edit",
+                pageLabel: "01 / 04",
+                title: "Cinematic Event & Film Editing",
+                text: "End-to-end post-production, from raw footage to final export. Story-driven edits with tight pacing, clean cuts and emotion-led storytelling for wedding films, events and cinema.",
+                visual: `
+                    <div class="vis-edit-track">
+                        <div class="vis-clip" style="width: 25%"></div>
+                        <div class="vis-clip vis-clip-active" style="width: 45%"></div>
+                        <div class="vis-clip" style="width: 30%"></div>
+                    </div>`
+            },
+            {
+                id: "color",
+                pageLabel: "02 / 04",
+                title: "Color Correction & DI Grading",
+                text: "Technical correction and creative grading in DaVinci Resolve. Balanced exposure, consistent shot matching and film looks built with LUTs to suit the mood of each story.",
+                visual: `
+                    <div class="vis-swatches">
+                        <div class="vis-swatch swatch-1"></div>
+                        <div class="vis-swatch swatch-2"></div>
+                        <div class="vis-swatch swatch-3"></div>
+                        <div class="vis-swatch swatch-4"></div>
+                        <div class="vis-swatch swatch-5"></div>
+                    </div>`
+            },
+            {
+                id: "camera",
+                pageLabel: "03 / 04",
+                title: "Camera Operation, Videography & Photography",
+                text: "Primary and secondary camera work for live events and studio shoots, plus photography. Strong control of exposure, framing, lighting and lens selection.",
+                visual: `
+                    <div class="vis-viewfinder">
+                        <div class="vf-corner vf-tl"></div>
+                        <div class="vf-corner vf-tr"></div>
+                        <div class="vf-corner vf-bl"></div>
+                        <div class="vf-corner vf-br"></div>
+                        <div class="vf-rec"><span class="rec-dot"></span> REC</div>
+                        <span class="vf-crosshair">+</span>
+                    </div>`
+            },
+            {
+                id: "motion",
+                pageLabel: "04 / 04",
+                title: "Shorts, Teasers & Motion VFX",
+                text: "Punchy, high-retention teasers and promo content with motion graphics and VFX polish, cut for reels and shorts.",
+                visual: `
+                    <div class="vis-keyframes">
+                        <div class="kf-line"></div>
+                        <div class="kf-diamond" style="left: 10%"></div>
+                        <div class="kf-diamond kf-diamond-active" style="left: 45%"></div>
+                        <div class="kf-diamond" style="left: 85%"></div>
+                    </div>`
+            }
+        ];
+
+        const suiteTabsContainer = document.querySelector('.suite-tabs');
+        const suiteTabs = document.querySelectorAll('.suite-tab');
+        const suitePanelContent = document.getElementById('suite-panel-content');
+        const suitePageSr = document.getElementById('suite-page-sr');
+        const suiteTitle = document.getElementById('suite-title');
+        const suiteText = document.getElementById('suite-text');
+        const suiteVisual = document.getElementById('suite-visual');
+        const suitePanel = document.getElementById('suite-panel');
+        let currentSuiteTabId = "edit";
+
+        function rollCounter(oldDigit, newDigit) {
+            const wrap = document.querySelector('.counter-roller-wrap');
+            if (!wrap) return;
+            wrap.innerHTML = `
+                <span class="roller-digit roller-out">${oldDigit}</span>
+                <span class="roller-digit roller-in-pre">${newDigit}</span>
+            `;
+            const digitIn = wrap.querySelector('.roller-in-pre');
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if (digitIn) {
+                        digitIn.classList.remove('roller-in-pre');
+                        digitIn.classList.add('roller-in');
+                    }
+                });
+            });
+            setTimeout(() => {
+                wrap.innerHTML = `<span class="roller-digit roller-static" id="suite-counter-val">${newDigit}</span>`;
+            }, 320);
+        }
+
+        function switchSuite(tabId) {
+            if (tabId === currentSuiteTabId) return;
+            const dataIndex = suiteData.findIndex(item => item.id === tabId);
+            if (dataIndex === -1) return;
+            const data = suiteData[dataIndex];
+            const oldIndex = suiteData.findIndex(item => item.id === currentSuiteTabId);
+            const oldNumber = oldIndex !== -1 ? suiteData[oldIndex].pageLabel.split(' ')[0] : '01';
+            const newNumber = data.pageLabel.split(' ')[0];
+            currentSuiteTabId = tabId;
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // 1. Sliding highlight indicator position
+            if (suiteTabsContainer) {
+                suiteTabsContainer.style.setProperty('--active-idx', dataIndex);
+            }
+
+            // 2. Active tab attributes & icon nudge
+            suiteTabs.forEach((tab, idx) => {
+                const isSelected = idx === dataIndex;
+                tab.classList.toggle('is-active', isSelected);
+                tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+                tab.setAttribute('tabindex', isSelected ? '0' : '-1');
+
+                if (isSelected && !prefersReducedMotion) {
+                    tab.classList.remove('is-nudging');
+                    void tab.offsetWidth; // force reflow for re-triggering animation
+                    tab.classList.add('is-nudging');
+                } else {
+                    tab.classList.remove('is-nudging');
+                }
+            });
+
+            if (suitePanel) {
+                suitePanel.setAttribute('aria-labelledby', `tab-${tabId}`);
+            }
+
+            if (prefersReducedMotion || !suitePanelContent) {
+                // Instant update without animation for reduced motion
+                const wrap = document.querySelector('.counter-roller-wrap');
+                if (wrap) wrap.innerHTML = `<span class="roller-digit roller-static" id="suite-counter-val">${newNumber}</span>`;
+                if (suitePageSr) suitePageSr.textContent = data.pageLabel;
+                if (suiteTitle) suiteTitle.textContent = data.title;
+                if (suiteText) suiteText.textContent = data.text;
+                if (suiteVisual) suiteVisual.innerHTML = data.visual;
+                return;
+            }
+
+            // 3. Fade out old content (120ms)
+            suitePanelContent.classList.add('is-fading-out');
+
+            setTimeout(() => {
+                // 4. Update content & trigger counter rolling
+                rollCounter(oldNumber, newNumber);
+                if (suitePageSr) suitePageSr.textContent = data.pageLabel;
+                if (suiteTitle) suiteTitle.textContent = data.title;
+                if (suiteText) suiteText.textContent = data.text;
+                if (suiteVisual) suiteVisual.innerHTML = data.visual;
+
+                // Prime entering state: opacity 0, translateY(14px)
+                suitePanelContent.classList.add('is-entering');
+                suitePanelContent.classList.remove('is-fading-out');
+
+                // Animate stagger elements up
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        suitePanelContent.classList.remove('is-entering');
+                    });
+                });
+            }, 120);
+        }
+
+        suiteTabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                switchSuite(tab.dataset.tabId);
+            });
+
+            tab.addEventListener('keydown', (e) => {
+                let targetIndex = -1;
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    targetIndex = (index + 1) % suiteTabs.length;
+                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    targetIndex = (index - 1 + suiteTabs.length) % suiteTabs.length;
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    targetIndex = 0;
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    targetIndex = suiteTabs.length - 1;
+                }
+
+                if (targetIndex !== -1) {
+                    suiteTabs[targetIndex].focus();
+                    switchSuite(suiteTabs[targetIndex].dataset.tabId);
+                }
+            });
+        });
+
         // Education & Film Training Data (DaVinci Resolve Color Node Graph)
         const educationData = [
             {
@@ -2838,8 +3894,8 @@
                 role: "Freelance Video Editor & Photographer",
                 period: "Jan 2022 — Sep 2025",
                 label: "Freelance",
-                subtitle: "Live Events, Cinematic Films & Color Grading",
-                text: "I handled primary and secondary cameras at various high-profile live events, working across different lenses and exposure settings. I also edited high-quality cinematic event videos from start to finish with tight pacing and emotional storytelling, and used professional color correction and grading in DaVinci Resolve and Adobe Premiere Pro to set specific moods and enhance the visual look."
+                subtitle: "Wedding Films, Events & Digital Content",
+                text: "Worked with clients and production teams on wedding films, event recaps, music videos, and social teasers. Managed full post-production pipelines: rough cuts, rhythm-driven montage editing, LUT creation, shot-to-shot color matching, and optimized exports for web and broadcast."
             },
             {
                 id: "prores",
@@ -2847,7 +3903,7 @@
                 period: "Sep 2025 — Present",
                 label: "Prores Studio",
                 subtitle: "Studio Video Content, Camera & Color Grading",
-                text: "I edit and deliver cinematic video for studio and client projects, taking them from raw footage to final export. On shoots I handle camera operation, framing, exposure and lens selection, and I finish each project with professional color correction and creative grading in DaVinci Resolve and Adobe Premiere Pro."
+                text: "Handled end-to-end video editing and color grading for studio productions, client shoots, and promotional content. Operated primary cameras on set, managed media ingestion, shot assembly, pacing, audio sync, and final delivery in DaVinci Resolve and Premiere Pro."
             }
         ];
 
