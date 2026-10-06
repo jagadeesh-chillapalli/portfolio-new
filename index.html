@@ -30,6 +30,17 @@
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 32px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+        }
+
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: var(--bg);
@@ -216,11 +227,17 @@
             align-items: flex-start;
         }
 
+        @property --profile-angle {
+            syntax: '<angle>';
+            inherits: false;
+            initial-value: 0deg;
+        }
+
         .profile {
             width: 100%;
             max-width: 420px;
-            padding: 20px;
-            border-radius: 14px;
+            padding: 22px;
+            border-radius: 16px;
             text-align: center;
             position: relative;
             overflow: visible;
@@ -228,16 +245,50 @@
             transform-origin: center;
         }
 
-        .profile::before {
+        /* Sharp continuous moving gradient border beam, visible strictly on hover */
+        .profile::after {
             content: "";
             position: absolute;
-            inset: 0;
-            border-radius: 14px;
-            background: radial-gradient(420px 140px at 50% 20%, rgba(255, 255, 255, 0.06), transparent 30%);
-            filter: blur(40px);
-            opacity: 0.75;
-            transform: translateY(-8px);
-            z-index: -1;
+            inset: -1.5px;
+            border-radius: 17.5px;
+            padding: 1.5px;
+            background: conic-gradient(
+                from var(--profile-angle, 0deg) at 50% 50%,
+                transparent 0%,
+                transparent 50%,
+                rgba(255, 170, 170, 0.2) 65%,
+                rgba(255, 170, 170, 0.9) 80%,
+                rgba(255, 255, 255, 1) 90%,
+                rgba(215, 140, 255, 0.85) 95%,
+                transparent 100%
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            animation: profileBorderSpin 4.5s linear infinite;
+            z-index: 2;
+            transition: opacity .35s ease;
+        }
+
+        .profile:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes profileBorderSpin {
+            0% {
+                --profile-angle: 0deg;
+            }
+            100% {
+                --profile-angle: 360deg;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .profile::after {
+                animation: none !important;
+            }
         }
 
         .profile-img {
@@ -426,7 +477,36 @@
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            transition: border-color .35s ease, box-shadow .35s ease;
+            transition: border-color .32s ease, box-shadow .32s ease;
+        }
+
+        .hero-text {
+            position: relative;
+            overflow: hidden;
+            transition: border-color .32s ease, box-shadow .32s ease;
+        }
+
+        .hero-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 170, 170, 0.45), transparent);
+            opacity: 0;
+            transition: opacity .35s ease;
+            pointer-events: none;
+        }
+
+        .hero-text:hover {
+            border-color: rgba(255, 170, 170, 0.28);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px -5px rgba(255, 170, 170, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transform: none !important;
+        }
+
+        .hero-text:hover::before {
+            opacity: 1;
         }
 
         #projects {
@@ -466,7 +546,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            transition: transform .32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .32s ease, border-color .32s ease;
+            transition: box-shadow .32s ease, border-color .32s ease;
             position: relative;
             overflow: hidden;
         }
@@ -484,7 +564,7 @@
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: none;
             border-color: rgba(255, 170, 170, 0.28);
             box-shadow: 0 20px 45px -10px rgba(255, 170, 170, 0.12), 0 10px 25px rgba(0, 0, 0, 0.4);
         }
@@ -1169,7 +1249,7 @@
 
             <div class="projects">
 
-                <article class="card reveal">
+                <article class="card">
                     <h4>Cinematic Event &amp; Film Editing</h4>
                     <p>High-quality, cinematic video content edited from start to finish from raw footage to final export, ensuring tight pacing and emotional storytelling.</p>
                     <div class="tags">
@@ -1179,7 +1259,7 @@
                     </div>
                 </article>
 
-                <article class="card reveal">
+                <article class="card">
                     <h4>Color Correction &amp; DI Grading</h4>
                     <p>Professional color correction and creative grading using DaVinci Resolve to establish specific visual moods, film looks, and enhance visual aesthetics.</p>
                     <div class="tags">
@@ -1189,7 +1269,7 @@
                     </div>
                 </article>
 
-                <article class="card reveal">
+                <article class="card">
                     <h4>Camera Operation &amp; Videography</h4>
                     <p>Handling primary and secondary cameras for live shoots and studio productions, mastering exposure, framing, lighting, and lens selection.</p>
                     <div class="tags">
@@ -1199,7 +1279,7 @@
                     </div>
                 </article>
 
-                <article class="card reveal">
+                <article class="card">
                     <h4>Shorts, Teasers &amp; Motion VFX</h4>
                     <p>Punchy, high-retention social teasers and promotional content with motion design, VFX, and visual polish optimized for reels and entertainment.</p>
                     <div class="tags">
@@ -1544,7 +1624,7 @@
 
         // Staggered reveal on scroll
         const revealElements = document.querySelectorAll('.reveal');
-        document.querySelectorAll('.projects .card, .two-cols .card, .timeline .tl-item').forEach((el, index) => {
+        document.querySelectorAll('.timeline .tl-item').forEach((el, index) => {
             el.style.transitionDelay = `${(index % 4) * 75}ms`;
         });
 
@@ -1625,6 +1705,23 @@
             updateDateTime();
             setInterval(updateDateTime, 1000);
         }
+
+        // Smooth scroll navigation for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        targetEl.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
     </script>
 </body>
 
