@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Chillapalli Jagadeesh — Video Editor | Photographer | Colorist</title>
     <meta name="description" content="Portfolio of Chillapalli Jagadeesh — Video Editor, Cinematographer &amp; Colorist with 3+ years of professional experience in cinematic editing, wedding films, videography and color grading." />
     <meta property="og:title" content="Chillapalli Jagadeesh — Video Editor | Photographer | Colorist" />
@@ -37,6 +37,9 @@
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 32px;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -51,6 +54,10 @@
             color: var(--text);
             line-height: 1.45;
             min-height: 100vh;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            position: relative;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             -webkit-tap-highlight-color: transparent;
@@ -167,11 +174,13 @@
         }
 
         .container {
+            width: 100%;
             max-width: 1100px;
             margin: 0 auto;
             padding: 48px 20px;
             position: relative;
             z-index: 10;
+            overflow-x: clip;
         }
 
         header {
@@ -712,6 +721,354 @@
             transform: none;
         }
 
+        /* DaVinci Resolve Color Node Graph (Education & Film Training) */
+        .resolve-nodes-section {
+            margin-top: 38px;
+            position: relative;
+        }
+
+        .resolve-graph-container {
+            width: 100%;
+            position: relative;
+            box-sizing: border-box;
+            margin-top: 14px;
+        }
+
+        .resolve-node-graph {
+            display: flex;
+            align-items: stretch;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Base Node */
+        .resolve-node {
+            position: relative;
+            background: #14151e;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+            box-sizing: border-box;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .resolve-node.node-01,
+        .resolve-node.node-02 {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .resolve-node.node-03 {
+            flex: 1.6;
+            min-width: 0;
+        }
+
+        .resolve-node:hover {
+            border-color: rgba(255, 170, 170, 0.45);
+        }
+
+        /* Node Header Strip */
+        .node-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-top-left-radius: 9px;
+            border-top-right-radius: 9px;
+        }
+
+        .node-chip {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        .node-chip-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Node Body */
+        .node-body {
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .node-title {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .node-line {
+            margin: 0;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--pink, #ffaaaa);
+            line-height: 1.35;
+        }
+
+        .node-years {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: auto;
+            padding-top: 10px;
+            display: inline-block;
+        }
+
+        .node-text {
+            margin: 8px 0 0 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        /* Featured Node 03 (Film School) */
+        .resolve-node.node-featured {
+            border: 1px solid rgba(255, 170, 170, 0.45);
+            background: linear-gradient(180deg, rgba(28, 22, 28, 0.95) 0%, rgba(18, 19, 27, 0.98) 100%);
+            box-shadow: 0 0 24px -6px rgba(255, 170, 170, 0.16), inset 0 1px 0 rgba(255, 170, 170, 0.25);
+        }
+
+        .resolve-node.node-featured:hover {
+            border-color: rgba(255, 170, 170, 0.7);
+        }
+
+        .resolve-node.node-featured .node-header {
+            background: rgba(255, 170, 170, 0.12);
+            border-bottom-color: rgba(255, 170, 170, 0.2);
+        }
+
+        .resolve-node.node-featured .node-chip {
+            color: var(--pink, #ffaaaa);
+        }
+
+        .node-chip-badge {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #12131a;
+            background: var(--pink, #ffaaaa);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .resolve-node.node-featured .node-title {
+            font-size: 16px;
+        }
+
+        /* Input / Output Ports (DaVinci Resolve style) */
+        .node-port {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #14151e;
+            border: 2px solid var(--pink, #ffaaaa);
+            box-sizing: border-box;
+            z-index: 5;
+        }
+
+        .port-out {
+            right: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .port-in {
+            left: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Connector Line between Nodes */
+        .node-connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            flex-shrink: 0;
+            position: relative;
+            padding: 0;
+            margin: 0;
+            align-self: center;
+        }
+
+        .connector-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #ffaaaa, rgba(255, 170, 170, 0.6));
+            position: relative;
+            transform-origin: left center;
+            transform: scaleX(0);
+        }
+
+        .connector-line::before,
+        .connector-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--pink, #ffaaaa);
+        }
+
+        .connector-line::before {
+            left: 0;
+        }
+
+        .connector-line::after {
+            right: 0;
+        }
+
+        /* Staggered Entrance Animations */
+        .resolve-nodes-section.in-view .resolve-node.node-01 {
+            animation: nodeEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0s forwards;
+        }
+
+        .resolve-nodes-section.in-view .node-connector:nth-of-type(2) .connector-line {
+            animation: connectorDrawX 0.35s ease 0.2s forwards;
+        }
+
+        .resolve-nodes-section.in-view .resolve-node.node-02 {
+            animation: nodeEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+        }
+
+        .resolve-nodes-section.in-view .node-connector:nth-of-type(4) .connector-line {
+            animation: connectorDrawX 0.35s ease 0.55s forwards;
+        }
+
+        .resolve-nodes-section.in-view .resolve-node.node-03 {
+            animation: nodeEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+        }
+
+        @keyframes nodeEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes connectorDrawX {
+            from {
+                transform: scaleX(0);
+            }
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes connectorDrawY {
+            from {
+                transform: scaleY(0);
+            }
+            to {
+                transform: scaleY(1);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .resolve-node {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+            }
+            .connector-line {
+                transform: scaleX(1) !important;
+                animation: none !important;
+            }
+        }
+
+        /* Mobile Layout: Vertical Stacking */
+        @media (max-width: 768px) {
+            .resolve-node-graph {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .resolve-node {
+                width: 100%;
+                flex: auto !important;
+            }
+
+            .port-out {
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -4px;
+                transform: translateX(-50%);
+            }
+
+            .port-in {
+                left: 50%;
+                top: -4px;
+                transform: translateX(-50%);
+            }
+
+            .node-connector {
+                width: 100%;
+                height: 24px;
+                align-self: auto;
+            }
+
+            .connector-line {
+                width: 2px;
+                height: 100%;
+                margin: 0 auto;
+                background: linear-gradient(180deg, #ffaaaa, rgba(255, 170, 170, 0.6));
+                transform-origin: top center;
+                transform: scaleY(0);
+            }
+
+            .connector-line::before {
+                top: 0;
+                left: 50%;
+                transform: translate(-50%, 0);
+            }
+
+            .connector-line::after {
+                top: auto;
+                bottom: 0;
+                left: 50%;
+                transform: translate(-50%, 0);
+            }
+
+            .resolve-nodes-section.in-view .node-connector:nth-of-type(2) .connector-line {
+                animation: connectorDrawY 0.35s ease 0.2s forwards;
+            }
+
+            .resolve-nodes-section.in-view .node-connector:nth-of-type(4) .connector-line {
+                animation: connectorDrawY 0.35s ease 0.55s forwards;
+            }
+        }
+
         .tl-role {
             color: var(--pink, #ffaaaa);
             font-size: 13px;
@@ -1090,6 +1447,16 @@
         }
 
         @media (max-width: 640px) {
+            .container {
+                padding: 32px 16px;
+            }
+
+            .timeline-playhead .playhead-badge {
+                right: 0;
+                left: auto;
+                transform: none;
+            }
+
             .timeline-grid {
                 grid-template-columns: 34px 1fr;
                 gap: 8px;
@@ -2188,30 +2555,67 @@
             </div>
         </section>
 
-        <!-- Education & Film Training -->
-        <section class="reveal" style="margin-top: 38px" aria-labelledby="eduHeading">
+        <!-- Education & Film Training (DaVinci Resolve Color Node Graph) -->
+        <section class="reveal resolve-nodes-section" style="margin-top: 38px" aria-labelledby="eduHeading">
             <h3 id="eduHeading" style="margin:0 0 20px; font-size:20px">Education &amp; Film Training</h3>
-            <div class="two-cols">
-                <div class="card">
-                    <div style="font-size: 11px; font-weight: 700; color: var(--pink); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Film Education &amp; DI Training</div>
-                    <h4 style="margin:0 0 4px">FTIH Film School</h4>
-                    <p class="tl-role" style="margin:2px 0 8px">6-Month Filmmaking Course | Film Editing &amp; DI</p>
-                    <p>Focused intensive training in cinematic film editing techniques, digital intermediate (DI), color correction, and visual storytelling workflows for cinema and entertainment.</p>
-                    <div class="tags" style="margin-top: 10px;">
-                        <span class="tag">Film Editing</span>
-                        <span class="tag">Digital Intermediate (DI)</span>
-                        <span class="tag">Color Science</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <div style="font-size: 11px; font-weight: 700; color: var(--pink); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Formal Education</div>
-                    <h4 style="margin:0 0 4px">Diploma in Computer Engineering</h4>
-                    <p class="tl-role" style="margin:2px 0 10px">Nuzvid Polytechnic College | 2019 – 2022</p>
-                    <div style="margin-top: 12px; border-top: 1px solid var(--glass-border); padding-top: 10px;">
-                        <h4 style="margin:0 0 2px; font-size: 15px;">Class X (SSC)</h4>
-                        <p class="tl-role" style="margin:2px 0 0">ZP High School, Atmakur | 2018 – 2019</p>
-                    </div>
-                </div>
+
+            <div class="resolve-graph-container">
+                <ol class="resolve-node-graph" aria-label="Education progression node graph">
+                    <!-- Node 01: School -->
+                    <li class="resolve-node node-01">
+                        <div class="node-header">
+                            <span class="node-chip">01 · SCHOOL</span>
+                            <span class="node-chip-dot" aria-hidden="true"></span>
+                        </div>
+                        <div class="node-body">
+                            <h4 class="node-title">Class X (SSC)</h4>
+                            <p class="node-line">ZP High School, Atmakur</p>
+                            <span class="node-years">2018 – 2019</span>
+                        </div>
+                        <span class="node-port port-out" aria-hidden="true"></span>
+                    </li>
+
+                    <!-- Connector 1 -->
+                    <li class="node-connector" aria-hidden="true">
+                        <span class="connector-line"></span>
+                    </li>
+
+                    <!-- Node 02: Diploma -->
+                    <li class="resolve-node node-02">
+                        <span class="node-port port-in" aria-hidden="true"></span>
+                        <div class="node-header">
+                            <span class="node-chip">02 · DIPLOMA</span>
+                            <span class="node-chip-dot" aria-hidden="true"></span>
+                        </div>
+                        <div class="node-body">
+                            <h4 class="node-title">Diploma in Computer Engineering</h4>
+                            <p class="node-line">Nuzvid Polytechnic College</p>
+                            <span class="node-years">2019 – 2022</span>
+                        </div>
+                        <span class="node-port port-out" aria-hidden="true"></span>
+                    </li>
+
+                    <!-- Connector 2 -->
+                    <li class="node-connector" aria-hidden="true">
+                        <span class="connector-line"></span>
+                    </li>
+
+                    <!-- Node 03: Film School (Featured) -->
+                    <li class="resolve-node node-03 node-featured">
+                        <span class="node-port port-in" aria-hidden="true"></span>
+                        <div class="node-header">
+                            <span class="node-chip">03 · FILM SCHOOL</span>
+                            <span class="node-chip-badge">FEATURED</span>
+                        </div>
+                        <div class="node-body">
+                            <h4 class="node-title">FTIH Film School</h4>
+                            <p class="node-line">6-Month Filmmaking Course | Film Editing &amp; DI</p>
+                            <p class="node-text">
+                                Focused intensive training in cinematic film editing techniques, digital intermediate (DI), color correction, and visual storytelling workflows for cinema and entertainment.
+                            </p>
+                        </div>
+                    </li>
+                </ol>
             </div>
         </section>
 
@@ -2308,7 +2712,7 @@
                     aria-labelledby="details-title"
                 >
                     <div class="details-header">
-                        <h4 class="details-title" id="details-title">Video Editor & Photographer— Prores Studio</h4>
+                        <h4 class="details-title" id="details-title">Video Editor & Photographer — Prores Studio</h4>
                         <span class="details-period" id="details-period">Sep 2025 — Present</span>
                     </div>
                     <div class="details-subtitle" id="details-subtitle">Studio Video Content, Camera &amp; Color Grading</div>
@@ -2401,6 +2805,32 @@
             revealElements.forEach(el => observer.observe(el));
         }
 
+        // Education & Film Training Data (DaVinci Resolve Color Node Graph)
+        const educationData = [
+            {
+                id: "school",
+                chip: "01 · SCHOOL",
+                title: "Class X (SSC)",
+                line: "ZP High School, Atmakur",
+                years: "2018 – 2019"
+            },
+            {
+                id: "diploma",
+                chip: "02 · DIPLOMA",
+                title: "Diploma in Computer Engineering",
+                line: "Nuzvid Polytechnic College",
+                years: "2019 – 2022"
+            },
+            {
+                id: "film-school",
+                chip: "03 · FILM SCHOOL",
+                featured: true,
+                title: "FTIH Film School",
+                line: "6-Month Filmmaking Course | Film Editing & DI",
+                text: "Focused intensive training in cinematic film editing techniques, digital intermediate (DI), color correction, and visual storytelling workflows for cinema and entertainment."
+            }
+        ];
+
         // Editor's Video Timeline (Career clips on track with interactive details panel)
         const experienceData = [
             {
@@ -2413,7 +2843,7 @@
             },
             {
                 id: "prores",
-                role: "Video Editor & Photographer— Prores Studio",
+                role: "Video Editor & Photographer — Prores Studio",
                 period: "Sep 2025 — Present",
                 label: "Prores Studio",
                 subtitle: "Studio Video Content, Camera & Color Grading",
