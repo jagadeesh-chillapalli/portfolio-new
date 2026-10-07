@@ -11,7 +11,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -418,12 +418,6 @@
             vertical-align: baseline;
         }
 
-        .hero-text {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
         .hero-title {
             font-size: 28px;
             font-weight: 900;
@@ -520,25 +514,599 @@
             cursor: pointer !important;
         }
 
+        /* Hero DaVinci Resolve Viewer Monitor Card */
+        .hero-text {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 18px 20px 20px;
+            border-radius: 16px;
+            background: #0d0e14;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-sizing: border-box;
+            transition: border-color .28s ease;
+        }
+
+        .hero-text:hover {
+            border-color: rgba(255, 170, 170, 0.28);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            transform: none !important;
+        }
+
+        .hero-text::before {
+            display: none !important;
+        }
+
+        /* 1. Top Bar: REC Indicator + Live Timecode */
+        .monitor-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            padding: 0 2px;
+            user-select: none;
+        }
+
+        .monitor-rec {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            color: #ef4444;
+            letter-spacing: 0.1em;
+        }
+
+        /* 3. REC dot: blinks gently once per second (opacity from 1 to 0.25 and back) */
+        .monitor-rec-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
+            animation: monitorRecBlink 1s ease-in-out infinite;
+            will-change: opacity;
+        }
+
+        @keyframes monitorRecBlink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.25;
+            }
+        }
+
+        /* 4. Timecode: tabular monospace fixed width */
+        .monitor-tc {
+            color: #8A687B;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+            display: inline-block;
+            min-width: 96px;
+            text-align: right;
+            user-select: none;
+        }
+
+        /* 2. Monitor Frame: Viewer screen with corner brackets & rule-of-thirds */
+        .monitor-frame {
+            position: relative;
+            background: #08090d;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 24px 28px;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .monitor-bg-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 170, 170, 0.035) 0%, transparent 70%);
+        }
+
+        /* 2. Vignette: soft radial gradient darkening edges and corners */
+        .monitor-vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.42) 100%);
+        }
+
+        /* 3. Light leak: soft pink/coral accent glow in top-right corner with slow breathing */
+        .monitor-light-leak {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 65%;
+            height: 65%;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(circle at 100% 0%, rgba(255, 170, 170, 0.45) 0%, rgba(226, 135, 131, 0.18) 45%, transparent 75%);
+            opacity: 0.15;
+            animation: lightLeakBreathe 6s ease-in-out infinite;
+            will-change: opacity;
+        }
+
+        @keyframes lightLeakBreathe {
+            0%, 100% {
+                opacity: 0.11;
+            }
+            50% {
+                opacity: 0.19;
+            }
+        }
+
+        /* 1. Film grain: very subtle feTurbulence noise texture with slow translate loop */
+        .monitor-grain {
+            position: absolute;
+            inset: -15px;
+            width: calc(100% + 30px);
+            height: calc(100% + 30px);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.06;
+            mix-blend-mode: overlay;
+            overflow: hidden;
+            animation: grainDrift 8s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        .monitor-grain-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        @keyframes grainDrift {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(-5px, 4px);
+            }
+            50% {
+                transform: translate(4px, -5px);
+            }
+            75% {
+                transform: translate(-3px, -2px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        /* 5. Center crosshair: thin 12px + mark at exact center behind headline */
+        .monitor-crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            pointer-events: none;
+            z-index: 1;
+            color: #ffffff;
+            opacity: 0.25;
+        }
+
+        /* 4. Viewer labels: tiny monospace uppercase labels in bottom corners */
+        .monitor-label {
+            position: absolute;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: rgba(220, 225, 235, 0.45);
+            pointer-events: none;
+            z-index: 2;
+            user-select: none;
+        }
+
+        .monitor-label-left {
+            bottom: 12px;
+            left: 36px;
+        }
+
+        .monitor-label-right {
+            bottom: 12px;
+            right: 36px;
+        }
+
+        /* 8. Pause looping animations when hero card is off-screen */
+        .hero-text.is-paused .monitor-grain,
+        .hero-text.is-paused .monitor-light-leak,
+        .hero-text.is-paused .monitor-rec-dot,
+        .hero-text.is-paused .hero-word-gradient,
+        .hero-text.is-paused .hero-word-cinematic,
+        .hero-text.is-paused .hero-word-emotion {
+            animation-play-state: paused !important;
+        }
+
+        .monitor-guides {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .guide-line {
+            position: absolute;
+            background: #ffffff;
+            opacity: 0.06;
+        }
+
+        .guide-v {
+            top: 0;
+            bottom: 0;
+            width: 1px;
+        }
+
+        .guide-v-1 { left: 33.333%; }
+        .guide-v-2 { left: 66.666%; }
+
+        .guide-h {
+            left: 0;
+            right: 0;
+            height: 1px;
+        }
+
+        .guide-h-1 { top: 33.333%; }
+        .guide-h-2 { top: 66.666%; }
+
+        .monitor-brackets {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* 1. Corner brackets: start scale 1.15 and opacity 0, tighten into place over 600ms */
+        .bracket {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: rgba(220, 225, 235, 0.65);
+            border-style: solid;
+            opacity: 0;
+            transform: scale(1.15);
+            animation: bracketLock 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            will-change: transform, opacity;
+        }
+
+        .bracket-tl {
+            top: 10px;
+            left: 10px;
+            border-width: 1.5px 0 0 1.5px;
+            transform-origin: top left;
+        }
+
+        .bracket-tr {
+            top: 10px;
+            right: 10px;
+            border-width: 1.5px 1.5px 0 0;
+            transform-origin: top right;
+        }
+
+        .bracket-bl {
+            bottom: 10px;
+            left: 10px;
+            border-width: 0 0 1.5px 1.5px;
+            transform-origin: bottom left;
+        }
+
+        .bracket-br {
+            bottom: 10px;
+            right: 10px;
+            border-width: 0 1.5px 1.5px 0;
+            transform-origin: bottom right;
+        }
+
+        @keyframes bracketLock {
+            0% {
+                transform: scale(1.15);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .monitor-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+            padding-bottom: 28px;
+        }
+
+        /* 2. Headline: Focus Pull Reveal in Playfair Display */
+        .hero-title {
+            font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+            font-size: clamp(26px, 3.1vw, 40px);
+            font-weight: 700;
+            font-style: normal;
+            letter-spacing: 0.005em;
+            line-height: 1.2;
+            margin: 0;
+            color: #ffffff;
+            text-align: left;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            animation: none;
+            text-shadow: none;
+        }
+
+        .hero-title-line {
+            display: block;
+        }
+
+        .hero-word-nowrap {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .hero-word {
+            display: inline-block;
+            vertical-align: baseline;
+            opacity: 0;
+            filter: blur(10px);
+            transform: scale(1.06);
+            animation: focusPullReveal 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--word-delay, 200ms);
+            will-change: transform, opacity, filter;
+            font-family: inherit;
+            font-weight: 700;
+            font-style: normal;
+            color: #ffffff;
+        }
+
+        .hero-word-gradient {
+            font-family: inherit;
+            font-weight: 700;
+            font-style: italic;
+            background-image: linear-gradient(
+                105deg,
+                #ffaaaa 0%,
+                #e28783 20%,
+                #ffaaaa 36%,
+                #ffc2c2 44%,
+                #ffe8e8 50%,
+                #ffc2c2 56%,
+                #ffaaaa 64%,
+                #e28783 80%,
+                #ffaaaa 100%
+            );
+            background-size: 260% 100%;
+            background-position: 100% 50%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 170, 170, 0.4);
+            padding-right: 2px;
+        }
+
+        .hero-word-cinematic {
+            animation: focusPullReveal 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       sweepCinematic 5s ease-in-out 2370ms infinite;
+            animation-delay: var(--word-delay, 830ms), 2370ms;
+        }
+
+        .hero-word-emotion {
+            animation: focusPullReveal 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       sweepEmotion 5s ease-in-out 2370ms infinite;
+            animation-delay: var(--word-delay, 920ms), 2370ms;
+        }
+
+        /* 1. Focus pull: blurred, slightly larger -> snaps into sharp focus with ZERO reflow */
+        @keyframes focusPullReveal {
+            0% {
+                opacity: 0;
+                filter: blur(10px);
+                transform: scale(1.06);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0px);
+                transform: scale(1);
+            }
+        }
+
+        /* 2. Light sweep: vivid lighter pink highlight glides across "cinematic emotion" left to right over 1.6s, repeats every 5s */
+        @keyframes sweepCinematic {
+            0% {
+                background-position: 100% 50%;
+            }
+            15% {
+                background-position: 0% 50%;
+            }
+            15.001%, 100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes sweepEmotion {
+            0%, 14% {
+                background-position: 100% 50%;
+            }
+            31% {
+                background-position: 0% 50%;
+            }
+            31.001%, 100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Paragraph fades in when 3rd word lands (1030ms) */
+        .hero-lead-anim {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: heroFadeUp 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1030ms;
+            will-change: transform, opacity;
+        }
+
+        /* Buttons fade in 120ms after paragraph (1150ms) */
+        .hero-cta-anim {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: heroFadeUp 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1150ms;
+            will-change: transform, opacity;
+        }
+
+        /* Metadata strip fades in 120ms after buttons (1270ms) */
+        .hero-meta-anim {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: heroFadeUp 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1270ms;
+            will-change: transform, opacity;
+        }
+
+        /* 4. Respect prefers-reduced-motion: immediate sharp focus, no blur, no stagger, no sweep */
+        @media (prefers-reduced-motion: reduce) {
+            .hero-title,
+            .hero-word,
+            .hero-word-gradient,
+            .hero-word-cinematic,
+            .hero-word-emotion {
+                animation: none !important;
+                opacity: 1 !important;
+                filter: none !important;
+                transform: none !important;
+                background-position: 0% 50% !important;
+            }
+
+            .hero-lead-anim,
+            .hero-cta-anim,
+            .hero-meta-anim {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
+        @keyframes heroFadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 3. Controls Row (Transport Controls) */
+        .monitor-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 0;
+            flex-wrap: wrap;
+        }
+
+        /* 4. Divider Line */
+        .monitor-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            width: 100%;
+            margin: 2px 0;
+        }
+
+        /* 5. Metadata Strip */
+        .monitor-metadata,
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 16px;
+            grid-template-columns: 1fr 1fr 1.5fr;
+            column-gap: 30px;
+            row-gap: 12px;
             font-size: 13px;
-            color: var(--muted);
+            align-items: start;
         }
 
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .meta-key,
         .info-grid .k {
-            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 10.5px;
+            font-weight: 600;
             text-transform: uppercase;
-            opacity: 0.75;
+            color: #8A687B;
+            letter-spacing: 0.08em;
+            user-select: none;
         }
 
+        .meta-key svg,
+        .info-grid .k svg {
+            flex-shrink: 0;
+            color: #8A687B;
+        }
+
+        .meta-val,
         .info-grid .v {
             font-weight: 600;
             color: var(--text);
-            margin-top: 6px;
+            font-size: 12px;
+            line-height: 1.35;
+            white-space: nowrap;
+        }
+
+        .meta-link {
+            display: inline-flex;
+            align-items: center;
+            color: inherit;
+            text-decoration: none;
+            padding: 3px 6px;
+            margin: -3px -6px;
+            border-radius: 6px;
+            background: transparent;
+            transition: background-color 150ms ease, color 150ms ease;
+            cursor: pointer;
+        }
+
+        .meta-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--pink, #ffaaaa);
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 170, 170, 0.6);
+            text-underline-offset: 3px;
+        }
+
+        .meta-link:focus-visible {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--pink, #ffaaaa);
+            outline: 1.5px solid var(--pink, #ffaaaa);
+            outline-offset: 2px;
+            text-decoration: none;
         }
 
         #viewProjectsBtn:hover svg {
@@ -573,35 +1141,6 @@
             -webkit-backdrop-filter: blur(14px);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             transition: border-color .32s ease, box-shadow .32s ease;
-        }
-
-        .hero-text {
-            position: relative;
-            overflow: hidden;
-            transition: border-color .32s ease, box-shadow .32s ease;
-        }
-
-        .hero-text::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 170, 170, 0.45), transparent);
-            opacity: 0;
-            transition: opacity .35s ease;
-            pointer-events: none;
-        }
-
-        .hero-text:hover {
-            border-color: rgba(255, 170, 170, 0.28);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px -5px rgba(255, 170, 170, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            transform: none !important;
-        }
-
-        .hero-text:hover::before {
-            opacity: 1;
         }
 
         #projects {
@@ -1415,7 +1954,7 @@
             }
         }
 
-        /* 4. Motion Visual: Shorts & Reels High-Retention Kinetic Rhythm Pacer */
+        /* 4. Motion Visual: Shorts & Reels High-Retention Kinetic Rhythm Pacer + Keyframe Curve Track */
         .vis-keyframes {
             position: relative;
             width: 100%;
@@ -1425,12 +1964,19 @@
             padding: 10px 14px;
             box-sizing: border-box;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+            flex-direction: column;
+            gap: 10px;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
             max-width: 580px;
             user-select: none;
+        }
+
+        .vis-pacer-top {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
 
         .vis-pacer-badge {
@@ -1592,6 +2138,135 @@
             line-height: 1.15;
         }
 
+        /* Keyframe Motion Curve Track */
+        .vis-kf-track {
+            width: 100%;
+            background: #110f17;
+            border: 1px solid #231e2b;
+            border-radius: 8px;
+            padding: 8px 10px 8px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .vis-kf-track-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 8.5px;
+            color: #8A687B;
+            letter-spacing: 0.05em;
+        }
+
+        .vis-kf-track-tag {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            color: #D4A5B8;
+        }
+
+        .vis-kf-pulse-icon {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .vis-kf-timecode {
+            font-size: 8.5px;
+            color: #8A687B;
+            letter-spacing: 0.04em;
+        }
+
+        .vis-kf-sep {
+            margin: 0 2px;
+            opacity: 0.5;
+        }
+
+        .vis-kf-canvas {
+            position: relative;
+            width: 100%;
+            height: 38px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* The straight white line that stays there */
+        .vis-kf-line {
+            position: absolute;
+            left: 6%;
+            right: 6%;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 1px;
+            background: rgba(255, 255, 255, 0.35);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* SVG curve overlay */
+        .vis-kf-curve-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* White curve path drawing from left to right on opening of tab */
+        .vis-kf-curve-path {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: kfCurveDraw 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes kfCurveDraw {
+            0% {
+                stroke-dashoffset: 1000;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Keyframe dots on the line */
+        .vis-kf-dot {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 7px;
+            height: 7px;
+            background: #ffffff;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+            z-index: 3;
+            border-radius: 1px;
+        }
+
+        .vis-kf-dot-label {
+            position: absolute;
+            top: 9px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-45deg);
+            font-size: 7.5px;
+            color: #8A687B;
+            font-weight: 600;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
         @media (max-width: 768px) {
             .vis-pacer-segments {
                 display: grid;
@@ -1621,6 +2296,12 @@
                 align-items: stretch;
                 padding: 10px;
                 gap: 10px;
+            }
+
+            .vis-pacer-top {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
             }
 
             .vis-pacer-badge {
@@ -1694,8 +2375,19 @@
             .rec-dot,
             .vf-crosshair,
             .kf-runner,
-            .kf-diamond {
+            .kf-diamond,
+            .vis-kf-curve-path,
+            .bracket,
+            .hero-word,
+            .hero-lead-anim,
+            .hero-cta-anim,
+            .hero-meta-anim,
+            .monitor-rec-dot,
+            .monitor-grain,
+            .monitor-light-leak {
                 animation: none !important;
+                transform: none !important;
+                stroke-dashoffset: 0 !important;
                 opacity: 1 !important;
                 filter: none !important;
             }
@@ -3460,13 +4152,68 @@
                 padding: 20px 16px;
             }
 
-            .hero-title {
-                font-size: 24px;
-            }
-
             .info-grid .v {
                 word-break: break-word;
                 overflow-wrap: anywhere;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 641px) {
+            .monitor-metadata,
+            .info-grid {
+                grid-template-columns: 1fr 1fr 1.5fr;
+                column-gap: 28px;
+                row-gap: 10px;
+            }
+
+            .meta-val,
+            .info-grid .v {
+                font-size: 11px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .monitor-crosshair {
+                display: none !important;
+            }
+
+            .monitor-label {
+                font-size: 9px;
+            }
+
+            .monitor-label-left {
+                left: 30px;
+                bottom: 10px;
+            }
+
+            .monitor-label-right {
+                right: 30px;
+                bottom: 10px;
+            }
+
+            .monitor-frame {
+                padding: 20px 18px;
+            }
+
+            .monitor-content {
+                padding-bottom: 20px;
+            }
+
+            .hero-title {
+                font-size: clamp(26px, 4.8vw, 30px);
+            }
+
+            .monitor-metadata,
+            .info-grid {
+                grid-template-columns: 1fr !important;
+                gap: 10px;
+            }
+
+            .meta-val,
+            .info-grid .v {
+                white-space: normal;
+                font-size: 13px;
             }
         }
 
@@ -3560,12 +4307,66 @@
             </div>
 
             <div class="hero-text card-base" aria-labelledby="heroHeading">
-                <h2 id="heroHeading" class="hero-title">I don’t just edit — I craft cinematic emotion</h2>
-                <p class="lead">
-                    Video Editor, Cinematographer &amp; Colorist with 3+ years of professional experience in cinematic editing, wedding films, videography and color grading. Skilled in Adobe Premiere Pro and DaVinci Resolve, with hands-on experience in camera operation, post-production and visual storytelling.
+                <!-- 1. Top bar: REC indicator + Live 24 FPS Timecode -->
+                <div class="monitor-top-bar">
+                    <div class="monitor-rec">
+                        <span class="monitor-rec-dot"></span>
+                        <span>REC</span>
+                    </div>
+                    <span class="monitor-tc" id="monitorTimecode" aria-label="Viewer Timecode">00:00:00:00</span>
+                </div>
+
+                <!-- 2. Monitor Frame: Viewer screen with corner brackets & rule-of-thirds -->
+                <div class="monitor-frame">
+                    <div class="monitor-bg-layer"></div>
+                    <div class="monitor-vignette" aria-hidden="true"></div>
+                    <div class="monitor-light-leak" aria-hidden="true"></div>
+                    <div class="monitor-grain" aria-hidden="true">
+                        <svg class="monitor-grain-svg" width="100%" height="100%">
+                            <filter id="heroGrainFilter">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
+                                <feColorMatrix type="saturate" values="0" />
+                            </filter>
+                            <rect width="100%" height="100%" filter="url(#heroGrainFilter)" />
+                        </svg>
+                    </div>
+                    <div class="monitor-guides" aria-hidden="true">
+                        <div class="guide-line guide-v guide-v-1"></div>
+                        <div class="guide-line guide-v guide-v-2"></div>
+                        <div class="guide-line guide-h guide-h-1"></div>
+                        <div class="guide-line guide-h guide-h-2"></div>
+                    </div>
+                    <svg class="monitor-crosshair" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                        <line x1="6" y1="0" x2="6" y2="12" />
+                        <line x1="0" y1="6" x2="12" y2="6" />
+                    </svg>
+                    <div class="monitor-brackets" aria-hidden="true">
+                        <div class="bracket bracket-tl"></div>
+                        <div class="bracket bracket-tr"></div>
+                        <div class="bracket bracket-bl"></div>
+                        <div class="bracket bracket-br"></div>
+                    </div>
+                    <span class="monitor-label monitor-label-left" aria-hidden="true">24 FPS</span>
+                    <span class="monitor-label monitor-label-right" aria-hidden="true">REC.709</span>
+                    <div class="monitor-content">
+                        <h2 id="heroHeading" class="hero-title">
+                            <span class="hero-title-line">
+                                <span class="hero-word" style="--word-delay: 200ms;">I</span> <span class="hero-word" style="--word-delay: 290ms;">don’t</span> <span class="hero-word" style="--word-delay: 380ms;">just</span> <span class="hero-word" style="--word-delay: 470ms;">edit</span> <span class="hero-word" style="--word-delay: 560ms;">—</span>
+                            </span>
+                            <span class="hero-title-line">
+                                <span class="hero-word-nowrap"><span class="hero-word" style="--word-delay: 650ms;">I</span>&nbsp;<span class="hero-word" style="--word-delay: 740ms;">craft</span></span> <span class="hero-word hero-word-gradient hero-word-cinematic" style="--word-delay: 830ms;">cinematic</span> <span class="hero-word hero-word-gradient hero-word-emotion" style="--word-delay: 920ms;">emotion</span>
+                            </span>
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- 3. Lead paragraph: fades in when 3rd word lands (1030ms) -->
+                <p class="lead hero-lead-anim">
+                    Video Editor, Cinematographer &amp; Colorist with 3+ years of experience in cinematic editing, wedding films, videography and color grading. Hands-on with camera operation and post-production, working in Adobe Premiere Pro and DaVinci Resolve.
                 </p>
 
-                <div class="hero-cta">
+                <!-- 4. Hero CTA buttons: fade in 100ms after paragraph (1340ms) -->
+                <div class="hero-cta monitor-controls hero-cta-anim">
                     <a href="https://drive.google.com/drive/folders/1h6mLH1f-JFpgSjXFcmHgDhCAm0BnlrF8" target="_blank" class="link" id="viewProjectsBtn">
                         <span style="display:inline-flex; align-items:center; gap:8px">
                             <span style="margin-bottom: 3px;">View Projects</span>
@@ -3591,22 +4392,37 @@
                     </a>
                 </div>
 
-                <div class="info-grid">
-                    <div>
-                        <div class="k">Location</div>
-                        <div class="v">Hyderabad, Vijayawada</div>
+                <!-- 5. Metadata Strip: fades in 100ms after buttons (1440ms) -->
+                <div class="monitor-divider hero-meta-anim"></div>
+                <div class="info-grid monitor-metadata hero-meta-anim">
+                    <div class="meta-item">
+                        <div class="k meta-key">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>Location</span>
+                        </div>
+                        <div class="v meta-val">Hyderabad, Vijayawada</div>
                     </div>
-                    <div>
-                        <div class="k">Phone</div>
-                        <div class="v">7815823804</div>
+                    <div class="meta-item">
+                        <div class="k meta-key">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <span>Phone</span>
+                        </div>
+                        <div class="v meta-val"><a href="tel:7815823804" class="meta-link">7815823804</a></div>
                     </div>
-                    <div>
-                        <div class="k">Email</div>
-                        <div class="v">jagadeeshchillapalli05@gmail.com</div>
-                    </div>
-                    <div>
-                        <div class="k">Role</div>
-                        <div class="v">Video Editor | Photographer | Colorist</div>
+                    <div class="meta-item">
+                        <div class="k meta-key">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            <span>Email</span>
+                        </div>
+                        <div class="v meta-val"><a href="mailto:jagadeeshchillapalli05@gmail.com" class="meta-link">jagadeeshchillapalli05@gmail.com</a></div>
                     </div>
                 </div>
             </div>
@@ -4320,45 +5136,78 @@
                 text: "Punchy, high-retention teasers and promo content with motion graphics and VFX polish, cut for reels and shorts.",
                 visual: `
                     <div class="vis-keyframes" aria-hidden="true">
-                        <div class="vis-pacer-badge">
-                            <div class="vis-phone-frame">
-                                <div class="vis-phone-screen">
-                                    <div class="vis-play-icon"></div>
+                        <div class="vis-pacer-top">
+                            <div class="vis-pacer-badge">
+                                <div class="vis-phone-frame">
+                                    <div class="vis-phone-screen">
+                                        <div class="vis-play-icon"></div>
+                                    </div>
+                                </div>
+                                <div class="vis-pacer-meta">
+                                    <span class="vis-pacer-label">FORMAT</span>
+                                    <span class="vis-pacer-val">9:16 REEL</span>
                                 </div>
                             </div>
-                            <div class="vis-pacer-meta">
-                                <span class="vis-pacer-label">FORMAT</span>
-                                <span class="vis-pacer-val">9:16 REEL</span>
+                            <div class="vis-pacer-segments">
+                                <div class="vis-segment-item vis-seg-hook">
+                                    <span class="vis-ping-dot"></span>
+                                    <span class="vis-seg-text" style="color: #ffffff;">00-03s HOOK</span>
+                                    <div class="vis-bars-wave">
+                                        <span class="vis-wave-bar bar-anim-1" style="background: #e28783;"></span>
+                                        <span class="vis-wave-bar bar-anim-2" style="background: #D4A5B8;"></span>
+                                        <span class="vis-wave-bar bar-anim-3" style="background: #F3E8EB;"></span>
+                                    </div>
+                                </div>
+                                <div class="vis-segment-item vis-seg-drop">
+                                    <span class="vis-seg-text" style="color: #D4A5B8;">03-08s DROP</span>
+                                    <div class="vis-bars-wave">
+                                        <span class="vis-wave-bar bar-anim-4" style="background: #8A687B;"></span>
+                                        <span class="vis-wave-bar bar-anim-2" style="background: #D4A5B8;"></span>
+                                    </div>
+                                </div>
+                                <div class="vis-segment-item vis-seg-broll">
+                                    <span class="vis-seg-text" style="color: #D4A5B8;">08-15s B-ROLL</span>
+                                </div>
+                                <div class="vis-segment-item vis-seg-cta">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #D4A5B8;"></span>
+                                    <span class="vis-seg-text" style="color: #F3E8EB;">15s CTA</span>
+                                </div>
+                            </div>
+                            <div class="vis-pacer-tempo">
+                                <span class="vis-pacer-label">PACE SYNC</span>
+                                <span class="vis-pacer-val" style="color: #e28783;">138 BPM</span>
                             </div>
                         </div>
-                        <div class="vis-pacer-segments">
-                            <div class="vis-segment-item vis-seg-hook">
-                                <span class="vis-ping-dot"></span>
-                                <span class="vis-seg-text" style="color: #ffffff;">00-03s HOOK</span>
-                                <div class="vis-bars-wave">
-                                    <span class="vis-wave-bar bar-anim-1" style="background: #e28783;"></span>
-                                    <span class="vis-wave-bar bar-anim-2" style="background: #D4A5B8;"></span>
-                                    <span class="vis-wave-bar bar-anim-3" style="background: #F3E8EB;"></span>
+                        <div class="vis-kf-track">
+                            <div class="vis-kf-track-header">
+                                <div class="vis-kf-track-tag">
+                                    <span class="vis-kf-pulse-icon"></span>
+                                    <span class="vis-kf-title">KEYFRAME EASING</span>
+                                </div>
+                                <div class="vis-kf-timecode">
+                                    <span>00:00:00:00</span>
+                                    <span class="vis-kf-sep">/</span>
+                                    <span>00:00:15:00</span>
                                 </div>
                             </div>
-                            <div class="vis-segment-item vis-seg-drop">
-                                <span class="vis-seg-text" style="color: #D4A5B8;">03-08s DROP</span>
-                                <div class="vis-bars-wave">
-                                    <span class="vis-wave-bar bar-anim-4" style="background: #8A687B;"></span>
-                                    <span class="vis-wave-bar bar-anim-2" style="background: #D4A5B8;"></span>
+                            <div class="vis-kf-canvas">
+                                <div class="vis-kf-line"></div>
+                                <svg class="vis-kf-curve-svg" viewBox="0 0 1000 44" preserveAspectRatio="none">
+                                    <path class="vis-kf-curve-path" d="M 60 22 C 160 4, 260 4, 360 22 C 460 40, 580 40, 680 22 C 770 4, 860 4, 940 22" />
+                                </svg>
+                                <div class="vis-kf-dot" style="left: 6%;" title="00s Keyframe">
+                                    <span class="vis-kf-dot-label">0s</span>
+                                </div>
+                                <div class="vis-kf-dot" style="left: 36%;" title="03s Hook Keyframe">
+                                    <span class="vis-kf-dot-label">3s</span>
+                                </div>
+                                <div class="vis-kf-dot" style="left: 68%;" title="08s Drop Keyframe">
+                                    <span class="vis-kf-dot-label">8s</span>
+                                </div>
+                                <div class="vis-kf-dot" style="left: 94%;" title="15s CTA Keyframe">
+                                    <span class="vis-kf-dot-label">15s</span>
                                 </div>
                             </div>
-                            <div class="vis-segment-item vis-seg-broll">
-                                <span class="vis-seg-text" style="color: #D4A5B8;">08-15s B-ROLL</span>
-                            </div>
-                            <div class="vis-segment-item vis-seg-cta">
-                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #D4A5B8;"></span>
-                                <span class="vis-seg-text" style="color: #F3E8EB;">15s CTA</span>
-                            </div>
-                        </div>
-                        <div class="vis-pacer-tempo">
-                            <span class="vis-pacer-label">PACE SYNC</span>
-                            <span class="vis-pacer-val" style="color: #e28783;">138 BPM</span>
                         </div>
                     </div>`
             }
@@ -4698,6 +5547,121 @@
                 stopHoverLoop();
             });
         }
+
+        // -------------------------------------------------------------
+        // Hero Viewer Monitor Live Timecode Counter (24 FPS, HH:MM:SS:FF)
+        // -------------------------------------------------------------
+        (function initMonitorTimecode() {
+            const tcEl = document.getElementById('monitorTimecode');
+            const heroCard = document.querySelector('.hero-text');
+            if (!tcEl || !heroCard) return;
+
+            const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            if (motionQuery.matches) {
+                tcEl.textContent = '00:00:00:00';
+                return;
+            }
+
+            let totalFrames = 0;
+            let isRunning = false;
+            let isTabVisible = !document.hidden;
+            let isCardInView = true;
+            let lastTimestamp = performance.now();
+            let accumulatedMs = 0;
+            const frameMs = 1000 / 24; // ~41.6667ms per frame
+            let rafId = null;
+
+            function formatTimecode(frames) {
+                const ff = frames % 24;
+                const totalSeconds = Math.floor(frames / 24);
+                const ss = totalSeconds % 60;
+                const totalMinutes = Math.floor(totalSeconds / 60);
+                const mm = totalMinutes % 60;
+                const hh = Math.floor(totalMinutes / 60) % 100;
+
+                const pad = (n) => (n < 10 ? '0' + n : String(n));
+                return `${pad(hh)}:${pad(mm)}:${pad(ss)}:${pad(ff)}`;
+            }
+
+            function loop(now) {
+                if (!isRunning) return;
+
+                const delta = now - lastTimestamp;
+                lastTimestamp = now;
+
+                if (delta > 0 && delta < 2000) {
+                    accumulatedMs += delta;
+                    let frameStepped = false;
+                    while (accumulatedMs >= frameMs) {
+                        totalFrames++;
+                        accumulatedMs -= frameMs;
+                        frameStepped = true;
+                    }
+                    if (frameStepped) {
+                        tcEl.textContent = formatTimecode(totalFrames);
+                    }
+                } else if (delta >= 2000) {
+                    accumulatedMs = 0;
+                }
+
+                rafId = requestAnimationFrame(loop);
+            }
+
+            function startTimer() {
+                if (!isRunning && isTabVisible && isCardInView && !motionQuery.matches) {
+                    isRunning = true;
+                    lastTimestamp = performance.now();
+                    accumulatedMs = 0;
+                    rafId = requestAnimationFrame(loop);
+                }
+            }
+
+            function stopTimer() {
+                isRunning = false;
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+            }
+
+            function updateCardActiveState() {
+                const shouldRun = isTabVisible && isCardInView && !motionQuery.matches;
+                if (shouldRun) {
+                    startTimer();
+                    heroCard.classList.remove('is-paused');
+                } else {
+                    stopTimer();
+                    heroCard.classList.add('is-paused');
+                }
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                isTabVisible = !document.hidden;
+                updateCardActiveState();
+            });
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        isCardInView = entry.isIntersecting;
+                        updateCardActiveState();
+                    });
+                }, { threshold: 0.05 });
+                observer.observe(heroCard);
+            }
+
+            motionQuery.addEventListener('change', (e) => {
+                if (e.matches) {
+                    stopTimer();
+                    heroCard.classList.add('is-paused');
+                    tcEl.textContent = '00:00:00:00';
+                } else {
+                    updateCardActiveState();
+                }
+            });
+
+            updateCardActiveState();
+        })();
     </script>
 </body>
 
